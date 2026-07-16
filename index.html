@@ -1,974 +1,1147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NPTEL Municipal Solid Waste Management Quiz</title>
-    <style>
-        /* Perplexity Design System */
-        :root {
-  /* Primitive Color Tokens */
-  --color-white: rgba(255, 255, 255, 1);
-  --color-black: rgba(0, 0, 0, 1);
-  --color-cream-50: rgba(252, 252, 249, 1);
-  --color-cream-100: rgba(255, 255, 253, 1);
-  --color-gray-200: rgba(245, 245, 245, 1);
-  --color-gray-300: rgba(167, 169, 169, 1);
-  --color-gray-400: rgba(119, 124, 124, 1);
-  --color-slate-500: rgba(98, 108, 113, 1);
-  --color-brown-600: rgba(94, 82, 64, 1);
-  --color-charcoal-700: rgba(31, 33, 33, 1);
-  --color-charcoal-800: rgba(38, 40, 40, 1);
-  --color-slate-900: rgba(19, 52, 59, 1);
-  --color-teal-300: rgba(50, 184, 198, 1);
-  --color-teal-400: rgba(45, 166, 178, 1);
-  --color-teal-500: rgba(33, 128, 141, 1);
-  --color-teal-600: rgba(29, 116, 128, 1);
-  --color-teal-700: rgba(26, 104, 115, 1);
-  --color-teal-800: rgba(41, 150, 161, 1);
-  --color-red-400: rgba(255, 84, 89, 1);
-  --color-red-500: rgba(192, 21, 47, 1);
-  --color-orange-400: rgba(230, 129, 97, 1);
-  --color-orange-500: rgba(168, 75, 47, 1);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e0b09">
+<title>Fretlight &mdash; Play Guitar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #0e0b09;
+  --bg-2: #161210;
+  --wood-dark: #241713;
+  --wood-mid: #3a2419;
+  --wood-light: #5a3823;
+  --wood-board: #1c120e;
+  --brass: #c9962c;
+  --brass-bright: #f0c464;
+  --cream: #eee6d6;
+  --cream-dim: #b8ac96;
+  --string: #d9d2bf;
+  --danger: #c0463f;
+  --danger-bright: #e8665c;
+  --ok: #5f9e6f;
+  --shadow: rgba(0,0,0,0.55);
+  --radius: 14px;
+  font-size: 16px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+html,body{
+  margin:0; padding:0; height:100%; overflow:hidden;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  user-select:none; -webkit-user-select:none;
+  touch-action: manipulation;
+}
+body{
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(201,150,44,0.10), transparent 55%),
+    var(--bg);
+}
+.mono{font-family:'JetBrains Mono', monospace;}
+.display{font-family:'Fraunces', serif;}
 
-  /* RGB versions for opacity control */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-  --color-slate-500-rgb: 98, 108, 113;
-  --color-red-500-rgb: 192, 21, 47;
-  --color-red-400-rgb: 255, 84, 89;
-  --color-orange-500-rgb: 168, 75, 47;
-  --color-orange-400-rgb: 230, 129, 97;
-
-  /* Background color tokens (Light Mode) */
-  --color-bg-1: rgba(59, 130, 246, 0.08);
-  --color-bg-2: rgba(245, 158, 11, 0.08);
-  --color-bg-3: rgba(34, 197, 94, 0.08);
-  --color-bg-4: rgba(239, 68, 68, 0.08);
-  --color-bg-5: rgba(147, 51, 234, 0.08);
-  --color-bg-6: rgba(249, 115, 22, 0.08);
-  --color-bg-7: rgba(236, 72, 153, 0.08);
-  --color-bg-8: rgba(6, 182, 212, 0.08);
-
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
-
-  /* Common style patterns */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for opacity control */
-  --color-success-rgb: 33, 128, 141;
-  --color-error-rgb: 192, 21, 47;
-  --color-warning-rgb: 168, 75, 47;
-  --color-info-rgb: 98, 108, 113;
-
-  /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, monospace;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-md: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 550;
-  --font-weight-bold: 600;
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --letter-spacing-tight: -0.01em;
-
-  /* Spacing */
-  --space-0: 0;
-  --space-1: 1px;
-  --space-2: 2px;
-  --space-4: 4px;
-  --space-6: 6px;
-  --space-8: 8px;
-  --space-10: 10px;
-  --space-12: 12px;
-  --space-16: 16px;
-  --space-20: 20px;
-  --space-24: 24px;
-  --space-32: 32px;
-
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-base: 8px;
-  --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Layout */
-  --container-sm: 640px;
-  --container-md: 768px;
-  --container-lg: 1024px;
-  --container-xl: 1280px;
+#app{
+  display:flex; flex-direction:column;
+  height:100vh; height:100dvh;
+  max-width:900px; margin:0 auto;
+  position:relative;
 }
 
-/* Dark mode colors */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-gray-400-rgb: 119, 124, 124;
-    --color-teal-300-rgb: 50, 184, 198;
-    --color-gray-300-rgb: 167, 169, 169;
-    --color-gray-200-rgb: 245, 245, 245;
-
-    --color-bg-1: rgba(29, 78, 216, 0.15);
-    --color-bg-2: rgba(180, 83, 9, 0.15);
-    --color-bg-3: rgba(21, 128, 61, 0.15);
-    --color-bg-4: rgba(185, 28, 28, 0.15);
-    --color-bg-5: rgba(107, 33, 168, 0.15);
-    --color-bg-6: rgba(194, 65, 12, 0.15);
-    --color-bg-7: rgba(190, 24, 93, 0.15);
-    --color-bg-8: rgba(8, 145, 178, 0.15);
-
-    --color-background: var(--color-charcoal-700);
-    --color-surface: var(--color-charcoal-800);
-    --color-text: var(--color-gray-200);
-    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-    --color-primary: var(--color-teal-300);
-    --color-primary-hover: var(--color-teal-400);
-    --color-primary-active: var(--color-teal-800);
-    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-error: var(--color-red-400);
-    --color-success: var(--color-teal-300);
-    --color-warning: var(--color-orange-400);
-    --color-info: var(--color-gray-300);
-    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-    --color-btn-primary-text: var(--color-slate-900);
-    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
-
-    --color-success-rgb: var(--color-teal-300-rgb);
-    --color-error-rgb: var(--color-red-400-rgb);
-    --color-warning-rgb: var(--color-orange-400-rgb);
-    --color-info-rgb: var(--color-gray-300-rgb);
-  }
+/* ---------- Top bar ---------- */
+#topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 10px 14px 8px;
+  flex-shrink:0;
 }
-
-/* Base styles */
-html {
-  font-size: var(--font-size-base);
-  font-family: var(--font-family-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background-color: var(--color-background);
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+#topbar .brand{
+  display:flex; align-items:baseline; gap:8px;
 }
-
-body {
-  margin: 0;
-  padding: 0;
+#topbar .brand h1{
+  font-family:'Fraunces', serif; font-weight:700; font-size:1.35rem; margin:0;
+  color: var(--brass-bright);
+  letter-spacing:0.01em;
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
+#topbar .brand span{ font-size:0.68rem; color:var(--cream-dim); font-family:'JetBrains Mono', monospace; letter-spacing:0.06em; text-transform:uppercase;}
+#topbar .actions{ display:flex; gap:8px; }
+.icon-btn{
+  width:38px; height:38px; border-radius:10px;
+  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  border:1px solid rgba(255,255,255,0.08);
+  color: var(--cream);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.05rem;
+  box-shadow: 0 2px 4px var(--shadow);
 }
+.icon-btn.active{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; border-color: rgba(0,0,0,0.2);}
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
-  letter-spacing: var(--letter-spacing-tight);
+/* ---------- Status strip ---------- */
+#statusstrip{
+  display:flex; gap:6px; padding: 0 14px 8px; flex-shrink:0;
+  overflow-x:auto; scrollbar-width:none;
 }
-
-h1 { font-size: var(--font-size-4xl); }
-h2 { font-size: var(--font-size-3xl); }
-h3 { font-size: var(--font-size-2xl); }
-
-p {
-  margin: 0 0 var(--space-16) 0;
+#statusstrip::-webkit-scrollbar{display:none;}
+.pill{
+  font-family:'JetBrains Mono', monospace; font-size:0.68rem;
+  color: var(--cream-dim);
+  background: rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  padding: 4px 9px; border-radius: 100px; white-space:nowrap;
+  display:flex; align-items:center; gap:5px;
 }
+.pill b{ color: var(--brass-bright); font-weight:600;}
+.pill.rec-on{ color: var(--danger-bright); border-color: rgba(224,80,70,0.4); background: rgba(192,70,63,0.12);}
+.dot-blink{ width:6px;height:6px;border-radius:50%; background:var(--danger-bright); animation: blink 1s infinite;}
+@keyframes blink{ 50%{opacity:0.2;} }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-  border: none;
-  text-decoration: none;
-  position: relative;
-}
-
-.btn:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.btn--primary {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-}
-
-.btn--primary:hover {
-  background: var(--color-primary-hover);
-}
-
-.btn--secondary {
-  background: var(--color-secondary);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-}
-
-.btn--secondary:hover {
-  background: var(--color-secondary-hover);
-}
-
-.btn--sm {
-  padding: var(--space-6) var(--space-12);
-  font-size: var(--font-size-sm);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Card component */
-.card {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
+/* ---------- Fretboard ---------- */
+#fb-wrap{
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 10px;
+  border-radius: var(--radius);
   overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 6px 18px var(--shadow);
+}
+#fb-scroll{
+  height:100%; overflow-x:auto; overflow-y:hidden;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.10) 0px, transparent 2px, transparent 60px),
+    linear-gradient(180deg, var(--wood-board), #140d0a);
+}
+#fb-grid{
+  height:100%;
+  display:grid;
+  grid-template-rows: repeat(6, 1fr);
+  position:relative;
+  width: max-content;
+  padding-left: 2px;
+}
+.fret-row{
+  display:grid;
+  grid-template-columns: 46px repeat(15, 62px);
+  position:relative;
+  align-items:center;
+}
+.string-line{
+  position:absolute; left:0; right:0; top:50%;
+  transform: translateY(-50%);
+  background: linear-gradient(180deg, #efe9da, #a89c82);
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+  border-radius:4px;
+  pointer-events:none;
+  z-index:1;
+  transform-origin:center;
+}
+.fret-row.playing .string-line{ animation: vibrate 0.5s ease-out; }
+@keyframes vibrate{
+  0%{ transform: translateY(-50%) scaleY(2.4); filter: brightness(1.6);}
+  100%{ transform: translateY(-50%) scaleY(1); filter: brightness(1);}
+}
+.fret-cell{
+  position:relative; z-index:2;
+  height:100%;
+  border:none; background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  padding:0;
+  border-right: 2px solid rgba(210,200,180,0.20);
+}
+.fret-cell:first-child{
+  border-right: 5px solid var(--brass);
+  background: linear-gradient(90deg, rgba(0,0,0,0.35), transparent);
+}
+.fret-row:nth-child(odd) .fret-cell{ background-color: rgba(255,255,255,0.012); }
+.inlay{
+  position:absolute; width:11px; height:11px; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #7a6a4a, #4a3d28);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:0; opacity:0.85;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+.fret-cell.capo-behind{ opacity:0.35; }
+.finger-dot{
+  width:26px; height:26px; border-radius:50%;
+  background: radial-gradient(circle at 32% 28%, var(--brass-bright), var(--brass) 60%, #8a611c 100%);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.6), 0 0 10px rgba(201,150,44,0.5);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.62rem; font-weight:700; color:#241708;
+  z-index:3;
+  animation: pop 0.12s ease-out;
+}
+@keyframes pop{ from{ transform:scale(0.4); } to{ transform:scale(1); } }
+.note-label{
+  font-family:'JetBrains Mono', monospace; font-size:0.58rem; color: rgba(238,230,214,0.4);
+  z-index:2; pointer-events:none;
+}
+.fret-cell.scale-note::after{
+  content:''; position:absolute; width:8px; height:8px; border-radius:50%;
+  border: 1.5px solid rgba(95,158,111,0.85); top:6px; right:6px;
+}
+.fret-cell.scale-root::after{
+  background: var(--ok); border-color: var(--ok);
+}
+.fret-num-row{
+  display:grid; grid-template-columns: 46px repeat(15, 62px);
+  flex-shrink:0; padding: 2px 0;
+}
+.fret-num{
+  text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.62rem; color: var(--cream-dim);
 }
 
-.card__body {
-  padding: var(--space-24);
+/* ---------- Chord chips ---------- */
+#chords{
+  display:flex; gap:8px; padding: 9px 14px; overflow-x:auto; flex-shrink:0;
+  scrollbar-width:none;
 }
-
-/* Container layout */
-.container {
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: var(--space-16);
-  padding-left: var(--space-16);
+#chords::-webkit-scrollbar{display:none;}
+.chord-chip{
+  font-family:'Fraunces', serif; font-weight:600; font-size:0.95rem;
+  color: var(--cream);
+  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 7px 15px;
+  flex-shrink:0;
+  box-shadow: 0 2px 4px var(--shadow);
 }
-
-@media (min-width: 768px) {
-  .container {
-    max-width: var(--container-md);
-  }
+.chord-chip.active{
+  background: linear-gradient(180deg, var(--brass), #a6741e);
+  color:#1a1208; border-color:rgba(0,0,0,0.2);
 }
+.chord-chip.clear{ color: var(--cream-dim); font-family:'Inter'; font-weight:500; font-size:0.8rem;}
 
-/* Utility classes */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-8 { gap: var(--space-8); }
-.gap-16 { gap: var(--space-16); }
-.gap-20 { gap: var(--space-20); }
-.mt-8 { margin-top: var(--space-8); }
-.mb-16 { margin-bottom: var(--space-16); }
-.mb-24 { margin-bottom: var(--space-24); }
-.py-32 { padding-top: var(--space-32); padding-bottom: var(--space-32); }
-.text-center { text-align: center; }
-.hidden { display: none; }
-
-@font-face {
-  font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+/* ---------- Strum zone ---------- */
+#strum-wrap{
+  flex-shrink:0;
+  margin: 0 10px 8px;
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 6px 18px var(--shadow);
 }
-
-/* Animated gradient background */
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+#strum-label{
+  font-family:'JetBrains Mono', monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.08em;
+  color: var(--cream-dim); text-align:center; padding: 5px 0 2px;
+  background: linear-gradient(180deg, #221812, #1a120d);
 }
-
-/* Quiz-specific styles */
-.quiz-container {
-    min-height: 100vh;
-    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe, #667eea);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+#strum-zone{
+  display:flex; flex-direction:column;
+  height: 30vh; min-height:170px; max-height:230px;
+  background: linear-gradient(180deg, #1a120d, #100b08);
+  touch-action: none;
 }
-
-.quiz-header {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: var(--space-16) 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.string-bar{
+  flex:1; position:relative; display:flex; align-items:center; padding: 0 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
-
-/* Ensure header text is always dark and visible */
-.quiz-header h1 {
-    color: #222 !important;
-    font-weight: var(--font-weight-semibold);
+.string-bar .physical-string{
+  position:absolute; left:12px; right:12px; top:50%; transform:translateY(-50%);
+  background: linear-gradient(180deg, #efe9da, #9a8e73);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
-
-.quiz-header span,
-.quiz-header button {
-    color: #333 !important;
+.string-bar.hit .physical-string{ animation: vibrate 0.45s ease-out; }
+.string-bar .meta{
+  position:relative; z-index:2; display:flex; justify-content:space-between; width:100%;
+  font-family:'JetBrains Mono', monospace; font-size:0.68rem; color: rgba(238,230,214,0.55);
+  pointer-events:none;
 }
+.string-bar .meta b{ color: var(--brass-bright); font-size:0.78rem; }
+.string-bar.muted{ opacity:0.3; }
 
-#question-counter {
-    color: #444 !important;
-    font-weight: var(--font-weight-medium);
+/* ---------- Drawer ---------- */
+#scrim{
+  position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:9;
+  opacity:0; pointer-events:none; transition: opacity 0.2s;
 }
-
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background-color: var(--color-secondary);
-    border-radius: var(--radius-full);
-    overflow: hidden;
+#scrim.show{ opacity:1; pointer-events:auto; }
+#drawer{
+  position:absolute; left:0; right:0; bottom:0; z-index:10;
+  background: linear-gradient(180deg, var(--bg-2), var(--bg));
+  border-top: 1px solid rgba(255,255,255,0.09);
+  border-radius: 18px 18px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.25s ease;
+  max-height: 82%;
+  overflow-y:auto;
+  padding: 14px 18px 26px;
+  box-shadow: 0 -8px 24px var(--shadow);
 }
-
-.progress-fill {
-    height: 100%;
-    background-color: var(--color-primary);
-    border-radius: var(--radius-full);
-    transition: width var(--duration-normal) var(--ease-standard);
+#drawer.open{ transform: translateY(0); }
+.drawer-handle{ width:36px; height:4px; border-radius:2px; background:rgba(255,255,255,0.2); margin:0 auto 14px; }
+.drawer-section{ margin-bottom: 20px; }
+.drawer-section h3{
+  font-family:'Fraunces', serif; font-size:0.95rem; margin: 0 0 10px; color: var(--brass-bright);
+  display:flex; align-items:center; gap:8px;
 }
-
-.question-card {
-    margin: var(--space-24) 0;
+.row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.row label{ font-size:0.82rem; color: var(--cream-dim); flex-shrink:0; }
+.row .val{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color: var(--brass-bright); min-width:34px; text-align:right;}
+select, input[type=range]{ accent-color: var(--brass); }
+select{
+  background: var(--wood-dark); color: var(--cream); border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px; padding:7px 10px; font-family:'Inter'; font-size:0.85rem; flex:1;
 }
-
-.question-text {
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-normal);
-    margin-bottom: var(--space-24);
-    color: var(--color-text);
+input[type=range]{ flex:1; }
+.btn-row{ display:flex; gap:8px; flex-wrap:wrap; }
+.btn{
+  flex:1; min-width:70px; text-align:center;
+  padding: 9px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.09);
+  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  color: var(--cream); font-size:0.82rem; font-weight:600;
 }
-
-.options-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-    margin-bottom: var(--space-24);
+.btn.on{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; }
+.btn.danger{ background: linear-gradient(180deg, var(--danger-bright), var(--danger)); color:#2a0d0a;}
+.toggle-row{ display:flex; gap:8px; }
+.toggle-row .btn{ flex:1; }
+#looper-timeline{
+  height:34px; border-radius:8px; background: rgba(255,255,255,0.04);
+  position:relative; overflow:hidden; margin-top:8px;
 }
-
-.option-button {
-    width: 100%;
-    padding: var(--space-16);
-    text-align: left;
-    background-color: #f5f5f5;
-    color: #222;
-    border: 2px solid var(--color-border);
-    border-radius: var(--radius-base);
-    cursor: pointer;
-    transition: all var(--duration-fast) var(--ease-standard);
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-normal);
+.tick{ position:absolute; bottom:0; width:3px; border-radius:2px; background: var(--brass-bright); }
+.close-drawer{
+  position:absolute; top:12px; right:14px; background:none; border:none; color:var(--cream-dim); font-size:1.3rem;
 }
-
-.option-button:hover {
-    border-color: var(--color-primary);
-    background-color: #d4edda;
-    color: #222;
-}
-
-.option-button.selected {
-    border-color: var(--color-primary);
-    background-color: #d4edda;
-    color: #222;
-}
-
-.option-button.correct {
-    border-color: var(--color-success);
-    background-color: #d4edda;
-    color: #006600;
-    font-weight: var(--font-weight-medium);
-}
-
-.option-button.incorrect {
-    border-color: var(--color-error);
-    background-color: #f8d7da;
-    color: #721c24;
-    font-weight: var(--font-weight-medium);
-}
-
-.navigation-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: var(--space-24);
-}
-
-.score-display {
-    display: flex;
-    gap: var(--space-16);
-    align-items: center;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-}
-
-.completion-screen {
-    text-align: center;
-    padding: var(--space-32) var(--space-16);
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
-    margin: var(--space-24) auto;
-    max-width: 600px;
-}
-
-.score-summary {
-    background-color: rgba(34, 197, 94, 0.1);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    padding: var(--space-24);
-    border-radius: var(--radius-lg);
-    margin: var(--space-24) 0;
-}
-
-.score-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-8);
-}
-
-.score-item:last-child {
-    margin-bottom: 0;
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-lg);
-}
-
-/* Responsive design */
-@media (max-width: 767px) {
-    .navigation-controls {
-        flex-direction: column;
-        gap: var(--space-16);
-    }
-    
-    .score-display {
-        order: -1;
-    }
-}
-    </style>
+</style>
 </head>
 <body>
-    <div class="quiz-container">
-        <!-- Quiz Header -->
-        <header class="quiz-header">
-            <div class="container">
-                <div class="flex flex-col gap-8">
-                    <div class="flex justify-between items-center">
-                        <h1>NPTEL Municipal Solid Waste Management Quiz</h1>
-                        <div class="score-display">
-                            <span id="current-score">Score: 0/0</span>
-                            <span id="percentage">0%</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span id="question-counter">Question 1 of 120</span>
-                        <button class="btn btn--secondary btn--sm" onclick="restartQuiz()">Restart Quiz</button>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                </div>
-            </div>
-        </header>
+<div id="app">
 
-        <!-- Main Quiz Content -->
-        <main class="container py-32">
-            <!-- Quiz Question Screen -->
-            <div id="quiz-screen" class="card question-card">
-                <div class="card__body">
-                    <div class="question-text" id="question-text"></div>
-                    <div class="options-list" id="options-list"></div>
-                    <div class="navigation-controls">
-                        <button class="btn btn--secondary" onclick="previousQuestion()" id="prev-btn" disabled>Previous</button>
-                        <button class="btn btn--primary" onclick="nextQuestion()" id="next-btn" disabled>Next</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Completion Screen -->
-            <div id="completion-screen" class="completion-screen hidden">
-                <h2>🎉 Quiz Completed!</h2>
-                <p>Congratulations! You have completed the NPTEL Municipal Solid Waste Management Quiz.</p>
-                
-                <div class="score-summary">
-                    <h3 class="mb-16">Your Final Score</h3>
-                    <div class="score-item">
-                        <span>Correct Answers:</span>
-                        <span id="final-correct">0</span>
-                    </div>
-                    <div class="score-item">
-                        <span>Total Questions:</span>
-                        <span id="final-total">120</span>
-                    </div>
-                    <div class="score-item">
-                        <span>Accuracy:</span>
-                        <span id="final-percentage">0%</span>
-                    </div>
-                </div>
-
-                <div class="flex gap-16 justify-center mt-24">
-                    <button class="btn btn--primary" onclick="restartQuiz()">Take Quiz Again</button>
-                    <button class="btn btn--secondary" onclick="reviewQuiz()">Review Answers</button>
-                </div>
-            </div>
-        </main>
+  <div id="topbar">
+    <div class="brand">
+      <h1>Fretlight</h1>
+      <span>pocket guitar</span>
     </div>
+    <div class="actions">
+      <button class="icon-btn" id="btn-notes" title="Toggle note names">&#9834;</button>
+      <button class="icon-btn" id="btn-settings" title="Controls">&#9881;</button>
+    </div>
+  </div>
 
-    <script>
-        // Quiz data - All 120 questions embedded
-        const quizData = [
-            {
-                question: "1. In which of the following conditions can we expect the highest rate of waste generation?",
-                options: ["hilly area with warm weather", "plain area with cold weather", "hilly area with cold weather", "plain area with warm weather"],
-                answer: "plain area with warm weather"
-            },
-            {
-                question: "2. Statement 1: Collection frequency affects the waste generation rate. Statement 2: More wastes are generated in areas where collection frequency is high",
-                options: ["Both statement 1 and statement 2 are correct", "Statement 1 is correct, but statement 2 is wrong", "Statement 1 is wrong, but statement 2 is correct", "Both Statement 1 and statement 2 are wrong"],
-                answer: "Both statement 1 and statement 2 are correct"
-            },
-            {
-                question: "3. Methods used to estimate waste quantity:",
-                options: ["Load-Count analysis", "Field capacity", "Quartering Method", "Weight-Volume analysis"],
-                answer: "Load-Count analysis, Weight-Volume analysis"
-            },
-            {
-                question: "4. Which of the following is NOT a characteristic of municipal solid waste?",
-                options: ["Heterogeneous composition", "High moisture content", "Radioactive materials", "Organic biodegradable matter"],
-                answer: "Radioactive materials"
-            },
-            {
-                question: "5. The 3R concept in waste management refers to:",
-                options: ["Reduce, Reuse, Recycle", "Remove, Relocate, Restore", "Replace, Repair, Retain", "Research, Regulate, Report"],
-                answer: "Reduce, Reuse, Recycle"
-            },
-            {
-                question: "6. Composting is most effective for which type of waste?",
-                options: ["Plastic waste", "Organic biodegradable waste", "Electronic waste", "Hazardous waste"],
-                answer: "Organic biodegradable waste"
-            },
-            {
-                question: "7. The ideal C:N ratio for composting is approximately:",
-                options: ["10:1", "20:1", "30:1", "50:1"],
-                answer: "30:1"
-            },
-            {
-                question: "8. Landfill gas primarily consists of:",
-                options: ["Oxygen and nitrogen", "Carbon dioxide and water vapor", "Methane and carbon dioxide", "Hydrogen sulfide and ammonia"],
-                answer: "Methane and carbon dioxide"
-            },
-            {
-                question: "9. The process of breaking down organic matter by microorganisms in the absence of oxygen is called:",
-                options: ["Aerobic decomposition", "Anaerobic decomposition", "Photochemical decomposition", "Thermal decomposition"],
-                answer: "Anaerobic decomposition"
-            },
-            {
-                question: "10. Which of the following is a primary collection method?",
-                options: ["Transfer station", "Door-to-door collection", "Material recovery facility", "Waste processing plant"],
-                answer: "Door-to-door collection"
-            },
-            {
-                question: "11. The moisture content of municipal solid waste typically ranges from:",
-                options: ["10-20%", "20-30%", "30-50%", "50-70%"],
-                answer: "20-30%"
-            },
-            {
-                question: "12. Incineration is most suitable for waste with:",
-                options: ["High moisture content", "High calorific value", "High ash content", "High metal content"],
-                answer: "High calorific value"
-            },
-            {
-                question: "13. The term 'NIMBY' in waste management stands for:",
-                options: ["Not In My Backyard", "National Integrated Management By-law", "New Innovative Management Beyond Yards", "No Impact Management Boundary Yard"],
-                answer: "Not In My Backyard"
-            },
-            {
-                question: "14. Leachate is commonly associated with:",
-                options: ["Composting facilities", "Incinerators", "Landfills", "Transfer stations"],
-                answer: "Landfills"
-            },
-            {
-                question: "15. The density of compacted municipal solid waste in a landfill is typically:",
-                options: ["200-400 kg/m³", "400-600 kg/m³", "600-800 kg/m³", "800-1000 kg/m³"],
-                answer: "400-600 kg/m³"
-            },
-            {
-                question: "16. Which gas is primarily responsible for the greenhouse effect from landfills?",
-                options: ["Carbon dioxide", "Methane", "Nitrous oxide", "Hydrogen sulfide"],
-                answer: "Methane"
-            },
-            {
-                question: "17. The waste hierarchy prioritizes waste management options in which order?",
-                options: ["Prevention, Minimization, Reuse, Recycling, Recovery, Disposal", "Recycling, Reuse, Recovery, Prevention, Minimization, Disposal", "Disposal, Recovery, Recycling, Reuse, Minimization, Prevention", "Recovery, Recycling, Reuse, Prevention, Minimization, Disposal"],
-                answer: "Prevention, Minimization, Reuse, Recycling, Recovery, Disposal"
-            },
-            {
-                question: "18. Vermicomposting uses which organisms?",
-                options: ["Bacteria", "Fungi", "Earthworms", "Algae"],
-                answer: "Earthworms"
-            },
-            {
-                question: "19. The collection efficiency is defined as:",
-                options: ["Waste collected / Waste generated × 100", "Waste processed / Waste collected × 100", "Waste recycled / Waste generated × 100", "Waste disposed / Waste processed × 100"],
-                answer: "Waste collected / Waste generated × 100"
-            },
-            {
-                question: "20. Material Recovery Facilities (MRFs) are primarily used for:",
-                options: ["Waste incineration", "Waste sorting and recycling", "Waste composting", "Waste landfilling"],
-                answer: "Waste sorting and recycling"
-            },
-            // Adding more questions to reach 120...
-            {
-                question: "21. The calorific value of municipal solid waste is typically measured in:",
-                options: ["kJ/kg", "kW/h", "kg/m³", "m³/kg"],
-                answer: "kJ/kg"
-            },
-            {
-                question: "22. Plastic waste is primarily problematic because it is:",
-                options: ["Highly toxic", "Non-biodegradable", "Radioactive", "Highly flammable"],
-                answer: "Non-biodegradable"
-            },
-            {
-                question: "23. The optimal temperature range for aerobic composting is:",
-                options: ["20-30°C", "40-60°C", "70-80°C", "90-100°C"],
-                answer: "40-60°C"
-            },
-            {
-                question: "24. Source separation of waste helps in:",
-                options: ["Reducing collection costs only", "Improving recycling efficiency only", "Both reducing costs and improving recycling", "Neither cost reduction nor recycling improvement"],
-                answer: "Both reducing costs and improving recycling"
-            },
-            {
-                question: "25. The term 'waste-to-energy' primarily refers to:",
-                options: ["Solar energy from waste sites", "Energy recovery through incineration", "Geothermal energy from landfills", "Wind energy from waste processing"],
-                answer: "Energy recovery through incineration"
-            },
-            // Continue with more questions to reach 120 total
-            // I'll add a representative sample and indicate there are more
-            {
-                question: "26. Hazardous waste requires special handling because it is:",
-                options: ["Expensive to collect", "Toxic to human health and environment", "Takes up too much space", "Cannot be transported easily"],
-                answer: "Toxic to human health and environment"
-            },
-            {
-                question: "27. The ph level optimal for composting is:",
-                options: ["4.0-5.0", "6.0-8.0", "8.5-9.5", "10.0-11.0"],
-                answer: "6.0-8.0"
-            },
-            {
-                question: "28. Transfer stations are used to:",
-                options: ["Sort recyclable materials", "Process organic waste", "Consolidate waste for efficient transport", "Treat hazardous waste"],
-                answer: "Consolidate waste for efficient transport"
-            },
-            {
-                question: "29. The main advantage of sanitary landfills over open dumps is:",
-                options: ["Lower cost", "Environmental protection", "Faster waste decomposition", "Easier waste access"],
-                answer: "Environmental protection"
-            },
-            {
-                question: "30. Extended Producer Responsibility (EPR) means:",
-                options: ["Producers must collect all waste", "Producers are responsible for their product's entire lifecycle", "Producers must pay waste management taxes", "Producers cannot use packaging"],
-                answer: "Producers are responsible for their product's entire lifecycle"
-            },
-            // Adding sample questions up to question 120
-            // In a real implementation, all 120 questions would be included
-            {
-                question: "119. Life cycle assessment helps in:",
-                options: ["Calculating waste generation rates", "Evaluating environmental impacts", "Determining collection schedules", "Setting waste disposal fees"],
-                answer: "Evaluating environmental impacts"
-            },
-            {
-                question: "120. What provides the pathway for identifying and assessing the costs related to ISWM?",
-                options: ["Full cost accounting", "Fixed cost accounting", "Full cost revenue", "Front end cost"],
-                answer: "Full cost accounting"
-            }
-        ];
+  <div id="statusstrip">
+    <div class="pill" id="pill-tuning">Tuning <b>Standard</b></div>
+    <div class="pill" id="pill-capo">Capo <b>0</b></div>
+    <div class="pill" id="pill-tone">Tone <b>Clean</b></div>
+    <div class="pill" id="pill-bpm">&#9835; <b>96</b> bpm</div>
+    <div class="pill" id="pill-rec">Loop <b>empty</b></div>
+  </div>
 
-        // Note: For brevity, I've included a representative sample. 
-        // In production, all 120 questions would be included here.
-        // Adding placeholder questions to reach 120 total
-        while (quizData.length < 120) {
-            const questionNum = quizData.length + 1;
-            quizData.push({
-                question: `${questionNum}. Sample question ${questionNum} about municipal solid waste management.`,
-                options: [`Option A for question ${questionNum}`, `Option B for question ${questionNum}`, `Option C for question ${questionNum}`, `Option D for question ${questionNum}`],
-                answer: `Option A for question ${questionNum}`
-            });
+  <div id="fb-wrap">
+    <div id="fb-scroll">
+      <div id="fb-grid"></div>
+    </div>
+  </div>
+  <div class="fret-num-row" id="fret-num-row"></div>
+
+  <div id="chords">
+    <div class="chord-chip clear" data-chord="__clear">Open</div>
+    <!-- chord chips injected -->
+  </div>
+
+  <div id="strum-wrap">
+    <div id="strum-label">Strum zone — tap a string, or swipe across to strum</div>
+    <div id="strum-zone"></div>
+  </div>
+</div>
+
+<div id="scrim"></div>
+<div id="drawer">
+  <button class="close-drawer" id="btn-close-drawer">&times;</button>
+  <div class="drawer-handle"></div>
+
+  <div class="drawer-section">
+    <h3>&#9834; Tuning &amp; Capo</h3>
+    <div class="row">
+      <label>Tuning</label>
+      <select id="sel-tuning">
+        <option value="standard">Standard (E A D G B E)</option>
+        <option value="dropd">Drop D</option>
+        <option value="halfdown">Half-step down</option>
+        <option value="fulldown">Full-step down</option>
+        <option value="openg">Open G</option>
+        <option value="opend">Open D</option>
+        <option value="dadgad">DADGAD</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Capo</label>
+      <input type="range" id="rng-capo" min="0" max="9" value="0" step="1">
+      <span class="val" id="val-capo">0</span>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h3>&#9679; Fretboard overlay</h3>
+    <div class="row">
+      <label>Root</label>
+      <select id="sel-root">
+        <option>C</option><option>C#</option><option>D</option><option>D#</option>
+        <option>E</option><option>F</option><option>F#</option><option>G</option>
+        <option>G#</option><option>A</option><option>A#</option><option>B</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Scale</label>
+      <select id="sel-scale">
+        <option value="none">Off</option>
+        <option value="major">Major</option>
+        <option value="minor">Natural minor</option>
+        <option value="majpent">Major pentatonic</option>
+        <option value="minpent">Minor pentatonic</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h3>&#9835; Tone</h3>
+    <div class="toggle-row">
+      <button class="btn on" id="btn-clean" data-tone="clean">Acoustic</button>
+      <button class="btn" id="btn-drive" data-tone="drive">Electric</button>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <label>Sustain</label>
+      <input type="range" id="rng-sustain" min="0" max="100" value="60">
+      <span class="val" id="val-sustain">60</span>
+    </div>
+    <div class="row">
+      <label>Warmth (tone)</label>
+      <input type="range" id="rng-tone" min="0" max="100" value="65">
+      <span class="val" id="val-tone">65</span>
+    </div>
+    <div class="row">
+      <label>Reverb</label>
+      <input type="range" id="rng-reverb" min="0" max="100" value="25">
+      <span class="val" id="val-reverb">25</span>
+    </div>
+    <div class="row">
+      <label>Volume</label>
+      <input type="range" id="rng-vol" min="0" max="100" value="80">
+      <span class="val" id="val-vol">80</span>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h3>&#9202; Metronome</h3>
+    <div class="row">
+      <label>Tempo</label>
+      <input type="range" id="rng-bpm" min="40" max="240" value="96">
+      <span class="val" id="val-bpm">96</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btn-tap">Tap tempo</button>
+      <button class="btn" id="btn-metro">Start</button>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h3>&#9679; Looper</h3>
+    <div class="btn-row">
+      <button class="btn danger" id="btn-rec">Record</button>
+      <button class="btn" id="btn-play-loop">Play</button>
+      <button class="btn" id="btn-clear-loop">Clear</button>
+    </div>
+    <div id="looper-timeline"></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================= DATA ============================= */
+// low E, A, D, G, B, high e — index 0..5
+const OPEN_FREQ = [82.4069, 110.0000, 146.8324, 195.9977, 246.9417, 329.6276];
+const OPEN_PC   = [4, 9, 2, 7, 11, 4]; // pitch class C=0
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const STRING_LABELS = ['E','A','D','G','B','e'];
+const NUM_FRETS = 15;
+
+const TUNINGS = {
+  standard:  [0,0,0,0,0,0],
+  dropd:     [-2,0,0,0,0,0],
+  halfdown:  [-1,-1,-1,-1,-1,-1],
+  fulldown:  [-2,-2,-2,-2,-2,-2],
+  openg:     [-2,-2,0,0,0,-2],
+  opend:     [-2,0,0,-1,-2,-2],
+  dadgad:    [-2,0,0,0,-2,-2],
+};
+const TUNING_LABELS = {
+  standard:'Standard', dropd:'Drop D', halfdown:'Half-step down',
+  fulldown:'Full-step down', openg:'Open G', opend:'Open D', dadgad:'DADGAD'
+};
+
+// chord shapes: fret per string low E..high e, null = muted string
+const CHORDS = {
+  'E':  [0,2,2,1,0,0],
+  'Em': [0,2,2,0,0,0],
+  'E7': [0,2,0,1,0,0],
+  'A':  [null,0,2,2,2,0],
+  'Am': [null,0,2,2,1,0],
+  'A7': [null,0,2,0,2,0],
+  'D':  [null,null,0,2,3,2],
+  'Dm': [null,null,0,2,3,1],
+  'D7': [null,null,0,2,1,2],
+  'G':  [3,2,0,0,0,3],
+  'C':  [null,3,2,0,1,0],
+  'C7': [null,3,2,3,1,0],
+  'F':  [null,null,3,2,1,1],
+  'B7': [null,2,1,2,0,2],
+};
+
+const SCALES = {
+  major:   [0,2,4,5,7,9,11],
+  minor:   [0,2,3,5,7,8,10],
+  majpent: [0,2,4,7,9],
+  minpent: [0,3,5,7,10],
+};
+
+/* ============================= STATE ============================= */
+let tuningKey = 'standard';
+let tuningOffsets = TUNINGS.standard.slice();
+let capo = 0;
+let currentFrets = [0,0,0,0,0,0]; // null = muted
+let activeChordName = null;
+let showNotes = false;
+let scaleRoot = 'C';
+let scaleType = 'none';
+
+let toneMode = 'clean';
+let sustainPct = 60;
+let tonePct = 65;
+let reverbPct = 25;
+let volPct = 80;
+
+let bpm = 96;
+let metroOn = false;
+let metroTimer = null;
+let tapTimes = [];
+
+let isRecording = false;
+let loopEvents = [];
+let loopStartT = 0;
+let loopDuration = 0;
+let loopPlaying = false;
+let loopTimers = [];
+
+/* ============================= AUDIO ============================= */
+let actx = null;
+let masterGain, dryGain, wetGain, convolver, compressor;
+
+function ensureAudio(){
+  if (actx) return;
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = actx.createGain();
+  masterGain.gain.value = volPct/100;
+
+  compressor = actx.createDynamicsCompressor();
+  compressor.threshold.value = -18;
+  compressor.knee.value = 24;
+  compressor.ratio.value = 4;
+  compressor.attack.value = 0.003;
+  compressor.release.value = 0.25;
+
+  dryGain = actx.createGain(); dryGain.gain.value = 1;
+  wetGain = actx.createGain(); wetGain.gain.value = reverbPct/100;
+
+  convolver = actx.createConvolver();
+  convolver.buffer = buildImpulse(2.2, 2.4);
+
+  dryGain.connect(compressor);
+  convolver.connect(wetGain).connect(compressor);
+  compressor.connect(masterGain).connect(actx.destination);
+}
+
+function buildImpulse(duration, decay){
+  const sr = actx.sampleRate;
+  const len = Math.floor(sr*duration);
+  const impulse = actx.createBuffer(2, len, sr);
+  for (let ch=0; ch<2; ch++){
+    const data = impulse.getChannelData(ch);
+    for (let i=0;i<len;i++){
+      data[i] = (Math.random()*2-1) * Math.pow(1 - i/len, decay);
+    }
+  }
+  return impulse;
+}
+
+function makeDriveCurve(amount){
+  const n = 4096;
+  const curve = new Float32Array(n);
+  const k = amount * 60 + 1;
+  for (let i=0;i<n;i++){
+    const x = (i*2)/n - 1;
+    curve[i] = Math.tanh(k*x) / Math.tanh(k);
+  }
+  return curve;
+}
+
+// Karplus-Strong plucked string synthesis
+function karplusBuffer(freq, durationSec, decayFactor){
+  const sr = actx.sampleRate;
+  const N = Math.max(4, Math.round(sr/freq));
+  const total = Math.floor(durationSec*sr);
+  const buffer = actx.createBuffer(1, total, sr);
+  const data = buffer.getChannelData(0);
+  const ring = new Float32Array(N);
+  for (let i=0;i<N;i++) ring[i] = Math.random()*2-1;
+  let idx = 0;
+  for (let n=0;n<total;n++){
+    const cur = ring[idx];
+    data[n] = cur;
+    const nextIdx = (idx+1)%N;
+    ring[idx] = decayFactor * 0.5 * (ring[idx] + ring[nextIdx]);
+    idx = nextIdx;
+  }
+  return buffer;
+}
+
+function noteFreq(stringIndex, fret){
+  if (fret === null || fret === undefined) return null;
+  const effFret = Math.max(fret, capo);
+  const base = OPEN_FREQ[stringIndex] * Math.pow(2, tuningOffsets[stringIndex]/12);
+  return base * Math.pow(2, effFret/12);
+}
+
+function noteNameFor(stringIndex, fret){
+  if (fret === null || fret === undefined) return null;
+  const effFret = Math.max(fret, capo);
+  const pc = (OPEN_PC[stringIndex] + tuningOffsets[stringIndex] + effFret) % 12;
+  const pcPos = ((pc % 12) + 12) % 12;
+  return NOTE_NAMES[pcPos];
+}
+
+function pluckString(stringIndex, opts){
+  opts = opts || {};
+  const fret = opts.fretOverride !== undefined ? opts.fretOverride : currentFrets[stringIndex];
+  const freq = noteFreq(stringIndex, fret);
+  if (freq === null) return; // muted
+  ensureAudio();
+  if (actx.state === 'suspended') actx.resume();
+
+  const decay = 0.975 + (sustainPct/100)*0.023; // 0.975 - 0.998
+  const dur = 1.2 + (sustainPct/100)*2.2;
+  const buf = karplusBuffer(freq, dur, decay);
+
+  const src = actx.createBufferSource();
+  src.buffer = buf;
+
+  const filter = actx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 1200 + (tonePct/100)*7000;
+  filter.Q.value = 0.7;
+
+  const gain = actx.createGain();
+  const vel = opts.velocity !== undefined ? opts.velocity : 1;
+  gain.gain.value = vel;
+
+  let chain = src.connect(filter);
+  if (toneMode === 'drive'){
+    const shaper = actx.createWaveShaper();
+    shaper.curve = makeDriveCurve(0.35);
+    shaper.oversample = '2x';
+    const postGain = actx.createGain();
+    postGain.gain.value = 0.6;
+    chain = chain.connect(shaper).connect(postGain);
+    chain.connect(gain);
+  } else {
+    chain.connect(gain);
+  }
+
+  gain.connect(dryGain);
+  gain.connect(convolver);
+
+  const when = opts.when !== undefined ? opts.when : actx.currentTime;
+  src.start(when);
+
+  if (navigator.vibrate) navigator.vibrate(6);
+  animateString(stringIndex);
+
+  if (isRecording && !opts.fromLoop){
+    loopEvents.push({ t: actx.currentTime - loopStartT, stringIndex, fret });
+  }
+  return freq;
+}
+
+/* ============================= FRETBOARD UI ============================= */
+const fbGrid = document.getElementById('fb-grid');
+const fretNumRow = document.getElementById('fret-num-row');
+const rowEls = [];
+
+function buildFretboard(){
+  fbGrid.innerHTML = '';
+  for (let s=0; s<6; s++){
+    const row = document.createElement('div');
+    row.className = 'fret-row';
+    row.dataset.string = s;
+
+    const line = document.createElement('div');
+    line.className = 'string-line';
+    const thickness = 1.5 + (5-s)*0.7; // low E thickest -> row index 0 is low E per our order, but displayed order handled below
+    line.style.height = thickness + 'px';
+    row.appendChild(line);
+
+    for (let f=0; f<=NUM_FRETS; f++){
+      const cell = document.createElement('button');
+      cell.className = 'fret-cell';
+      cell.dataset.string = s;
+      cell.dataset.fret = f;
+      if ([3,5,7,9,15].includes(f) && s===2){
+        const inlay = document.createElement('div');
+        inlay.className = 'inlay';
+        cell.appendChild(inlay);
+      }
+      if (f===12 && (s===1||s===4)){
+        const inlay = document.createElement('div');
+        inlay.className = 'inlay';
+        cell.appendChild(inlay);
+      }
+      const label = document.createElement('div');
+      label.className = 'note-label';
+      cell.appendChild(label);
+
+      cell.addEventListener('pointerdown', (e)=>{
+        e.preventDefault();
+        setFret(s, f);
+        pluckString(s, {velocity:0.55, fretOverride:f});
+      });
+      row.appendChild(cell);
+    }
+    fbGrid.appendChild(row);
+    rowEls[s] = row;
+  }
+
+  // display order: high e on top .. low E on bottom (tab convention)
+  fbGrid.style.display = 'grid';
+  for (let s=0; s<6; s++){
+    rowEls[s].style.order = (5 - s); // s=5 (high e) -> order 0 (top)
+  }
+
+  // fret number ruler (aligned 1:1 with the fret-cell columns, including the open/nut column)
+  fretNumRow.innerHTML = '';
+  for (let f=0; f<=NUM_FRETS; f++){
+    const d = document.createElement('div');
+    d.className = 'fret-num';
+    d.textContent = f===0 ? 'open' : f;
+    fretNumRow.appendChild(d);
+  }
+}
+
+function setFret(stringIndex, fret){
+  if (currentFrets[stringIndex] === fret){
+    currentFrets[stringIndex] = 0; // tap again to release to open
+  } else {
+    currentFrets[stringIndex] = fret;
+  }
+  activeChordName = null;
+  refreshFretUI();
+  refreshStrumUI();
+  refreshChordChipsActive();
+}
+
+function refreshFretUI(){
+  for (let s=0; s<6; s++){
+    const row = rowEls[s];
+    const cells = row.querySelectorAll('.fret-cell');
+    cells.forEach((cell)=>{
+      const f = parseInt(cell.dataset.fret,10);
+      const existingDot = cell.querySelector('.finger-dot');
+      if (existingDot) existingDot.remove();
+      cell.classList.remove('capo-behind');
+      if (capo>0 && f>0 && f<capo) cell.classList.add('capo-behind');
+
+      const isMuted = currentFrets[s] === null;
+      const isActive = !isMuted && (
+        (currentFrets[s] === f) || (currentFrets[s]===0 && f===0 && !isMuted)
+      );
+      if (!isMuted && currentFrets[s] === f && f>0){
+        const dot = document.createElement('div');
+        dot.className = 'finger-dot';
+        cell.appendChild(dot);
+      }
+
+      const label = cell.querySelector('.note-label');
+      if (label){
+        label.textContent = showNotes ? (noteNameFor(s,f) || '') : '';
+      }
+
+      // scale overlay
+      cell.classList.remove('scale-note','scale-root');
+      if (scaleType !== 'none'){
+        const pc = (OPEN_PC[s] + tuningOffsets[s] + f) % 12;
+        const pcPos = ((pc%12)+12)%12;
+        const rootPC = NOTE_NAMES.indexOf(scaleRoot);
+        const interval = ((pcPos - rootPC)+12)%12;
+        if (SCALES[scaleType].includes(interval)){
+          cell.classList.add('scale-note');
+          if (interval===0) cell.classList.add('scale-root');
         }
+      }
+    });
+    // open "fret 0" muted indicator
+    if (currentFrets[s] === null){
+      row.style.opacity = 0.35;
+    } else {
+      row.style.opacity = 1;
+    }
+  }
+}
 
-        // Quiz state
-        let currentQuestionIndex = 0;
-        let userAnswers = new Array(quizData.length).fill(null);
-        let score = 0;
-        let isAnswered = false;
-        let autoAdvanceTimeout = null;
+function animateString(stringIndex){
+  const row = rowEls[stringIndex];
+  row.classList.remove('playing');
+  void row.offsetWidth;
+  row.classList.add('playing');
+  const bar = strumBars[stringIndex];
+  if (bar){
+    bar.classList.remove('hit');
+    void bar.offsetWidth;
+    bar.classList.add('hit');
+  }
+}
 
-        // DOM elements
-        const questionCounter = document.getElementById('question-counter');
-        const progressFill = document.getElementById('progress-fill');
-        const questionText = document.getElementById('question-text');
-        const optionsList = document.getElementById('options-list');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const currentScoreElement = document.getElementById('current-score');
-        const percentageElement = document.getElementById('percentage');
-        const quizScreen = document.getElementById('quiz-screen');
-        const completionScreen = document.getElementById('completion-screen');
+/* ============================= STRUM ZONE UI ============================= */
+const strumZone = document.getElementById('strum-zone');
+const strumBars = [];
 
-        // Initialize quiz
-        function initQuiz() {
-            currentQuestionIndex = 0;
-            userAnswers = new Array(quizData.length).fill(null);
-            score = 0;
-            isAnswered = false;
-            
-            quizScreen.classList.remove('hidden');
-            completionScreen.classList.add('hidden');
-            
-            displayQuestion();
-            updateProgress();
-            updateScore();
-        }
+function buildStrumZone(){
+  strumZone.innerHTML = '';
+  // order: high e on top .. low E on bottom, matching fretboard
+  for (let disp=0; disp<6; disp++){
+    const s = 5 - disp; // string index
+    const bar = document.createElement('div');
+    bar.className = 'string-bar';
+    bar.dataset.string = s;
+    const phys = document.createElement('div');
+    phys.className = 'physical-string';
+    const thickness = 1.5 + (5-s)*0.9;
+    phys.style.height = thickness + 'px';
+    bar.appendChild(phys);
 
-        // Display current question
-        function displayQuestion() {
-            const question = quizData[currentQuestionIndex];
-            const isReviewMode = userAnswers[currentQuestionIndex] !== null;
-            
-            questionText.textContent = question.question;
-            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
-            
-            // Clear previous options
-            optionsList.innerHTML = '';
-            
-            // Create option buttons
-            question.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.className = 'option-button';
-                button.textContent = option;
-                button.onclick = () => selectOption(index, option);
-                
-                // If in review mode, show the previous selection and correct answer
-                if (isReviewMode) {
-                    if (option === question.answer) {
-                        button.classList.add('correct');
-                    }
-                    if (option === userAnswers[currentQuestionIndex] && option !== question.answer) {
-                        button.classList.add('incorrect');
-                    }
-                    if (option === userAnswers[currentQuestionIndex]) {
-                        button.classList.add('selected');
-                    }
-                    button.onclick = null; // Disable clicking in review mode
-                }
-                
-                optionsList.appendChild(button);
-            });
-            
-            // Update navigation buttons
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.disabled = !isReviewMode && userAnswers[currentQuestionIndex] === null;
-            nextBtn.textContent = currentQuestionIndex === quizData.length - 1 ? 'Finish' : 'Next';
-            
-            isAnswered = isReviewMode;
-            
-            // Clear any pending auto-advance
-            if (autoAdvanceTimeout) {
-                clearTimeout(autoAdvanceTimeout);
-                autoAdvanceTimeout = null;
-            }
-        }
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.innerHTML = '<span class="lbl"></span><b class="fretlbl"></b>';
+    bar.appendChild(meta);
 
-        // Handle option selection
-        function selectOption(index, selectedAnswer) {
-            if (isAnswered) return;
-            
-            const question = quizData[currentQuestionIndex];
-            const buttons = optionsList.querySelectorAll('.option-button');
-            
-            // Disable all buttons
-            buttons.forEach(button => {
-                button.onclick = null;
-                if (button.textContent === question.answer) {
-                    button.classList.add('correct');
-                }
-            });
-            
-            // Mark selected button
-            buttons[index].classList.add('selected');
-            if (selectedAnswer !== question.answer) {
-                buttons[index].classList.add('incorrect');
-            }
-            
-            // Update user answer and score
-            userAnswers[currentQuestionIndex] = selectedAnswer;
-            if (selectedAnswer === question.answer) {
-                score++;
-            }
-            
-            isAnswered = true;
-            nextBtn.disabled = false;
-            updateScore();
-            
-            // Auto-advance after 2 seconds
-            autoAdvanceTimeout = setTimeout(() => {
-                if (currentQuestionIndex < quizData.length - 1) {
-                    nextQuestion();
-                } else {
-                    showCompletion();
-                }
-            }, 2000);
-        }
+    strumZone.appendChild(bar);
+    strumBars[s] = bar;
+  }
+  refreshStrumUI();
+}
 
-        // Navigate to next question
-        function nextQuestion() {
-            if (autoAdvanceTimeout) {
-                clearTimeout(autoAdvanceTimeout);
-                autoAdvanceTimeout = null;
-            }
-            
-            if (currentQuestionIndex < quizData.length - 1) {
-                currentQuestionIndex++;
-                isAnswered = false;
-                displayQuestion();
-                updateProgress();
-            } else {
-                showCompletion();
-            }
-        }
+function refreshStrumUI(){
+  for (let s=0; s<6; s++){
+    const bar = strumBars[s];
+    if (!bar) continue;
+    const muted = currentFrets[s] === null;
+    bar.classList.toggle('muted', muted);
+    const lbl = bar.querySelector('.lbl');
+    const fretlbl = bar.querySelector('.fretlbl');
+    const noteName = muted ? '×' : (noteNameFor(s, currentFrets[s]) || '');
+    const octGuess = s<=2 ? (s===0?2:(s===1?2:3)) : (s===3?3:4);
+    lbl.textContent = STRING_LABELS[s] + ' string';
+    fretlbl.textContent = muted ? 'muted' : (noteName + (currentFrets[s]>0 ? ' · fret '+Math.max(currentFrets[s],capo) : ' · open'));
+  }
+}
 
-        // Navigate to previous question
-        function previousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                isAnswered = false;
-                displayQuestion();
-                updateProgress();
-            }
-        }
+/* strum gesture handling */
+let strumActive = false;
+let strumTouched = new Set();
+let strumOrderCounter = 0;
 
-        // Update progress bar
-        function updateProgress() {
-            const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
-            progressFill.style.width = progress + '%';
-        }
+function stringIndexFromPoint(x,y){
+  const el = document.elementFromPoint(x,y);
+  if (!el) return null;
+  const bar = el.closest('.string-bar');
+  if (!bar) return null;
+  return parseInt(bar.dataset.string,10);
+}
 
-        // Update score display
-        function updateScore() {
-            const answeredCount = userAnswers.filter(answer => answer !== null).length;
-            const percentage = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0;
-            
-            currentScoreElement.textContent = `Score: ${score}/${answeredCount}`;
-            percentageElement.textContent = `${percentage}%`;
-        }
+strumZone.addEventListener('pointerdown', (e)=>{
+  strumActive = true;
+  strumTouched.clear();
+  strumOrderCounter = 0;
+  const s = stringIndexFromPoint(e.clientX, e.clientY);
+  if (s!==null && !strumTouched.has(s)){
+    strumTouched.add(s);
+    pluckString(s, {velocity:0.95});
+  }
+});
+strumZone.addEventListener('pointermove', (e)=>{
+  if (!strumActive) return;
+  const s = stringIndexFromPoint(e.clientX, e.clientY);
+  if (s!==null && !strumTouched.has(s)){
+    strumTouched.add(s);
+    strumOrderCounter++;
+    ensureAudio();
+    const when = actx.currentTime + strumOrderCounter*0.012;
+    pluckString(s, {velocity:0.9, when: when});
+  }
+});
+window.addEventListener('pointerup', ()=>{ strumActive=false; strumTouched.clear(); });
+strumZone.addEventListener('contextmenu', e=>e.preventDefault());
 
-        // Show completion screen
-        function showCompletion() {
-            quizScreen.classList.add('hidden');
-            completionScreen.classList.remove('hidden');
-            
-            const finalCorrect = document.getElementById('final-correct');
-            const finalTotal = document.getElementById('final-total');
-            const finalPercentage = document.getElementById('final-percentage');
-            
-            const percentage = Math.round((score / quizData.length) * 100);
-            
-            finalCorrect.textContent = score;
-            finalTotal.textContent = quizData.length;
-            finalPercentage.textContent = percentage + '%';
-        }
+/* ============================= CHORD CHIPS ============================= */
+const chordsRow = document.getElementById('chords');
+function buildChordChips(){
+  Object.keys(CHORDS).forEach(name=>{
+    const chip = document.createElement('div');
+    chip.className = 'chord-chip';
+    chip.dataset.chord = name;
+    chip.textContent = name;
+    chordsRow.appendChild(chip);
+  });
+}
+chordsRow.addEventListener('pointerdown', (e)=>{
+  const chip = e.target.closest('.chord-chip');
+  if (!chip) return;
+  const name = chip.dataset.chord;
+  if (name === '__clear'){
+    currentFrets = [0,0,0,0,0,0];
+    activeChordName = null;
+  } else {
+    currentFrets = CHORDS[name].slice();
+    activeChordName = name;
+    ensureAudio();
+    // gentle strum preview, low to high with slight delay
+    let n=0;
+    for (let s=0;s<6;s++){
+      if (currentFrets[s]===null) continue;
+      const when = actx.currentTime + n*0.045;
+      pluckString(s, {velocity:0.8, when});
+      n++;
+    }
+  }
+  refreshFretUI();
+  refreshStrumUI();
+  refreshChordChipsActive();
+});
+function refreshChordChipsActive(){
+  document.querySelectorAll('.chord-chip').forEach(c=>{
+    c.classList.toggle('active', c.dataset.chord === activeChordName || (activeChordName===null && c.dataset.chord==='__clear'));
+  });
+}
 
-        // Restart quiz
-        function restartQuiz() {
-            if (autoAdvanceTimeout) {
-                clearTimeout(autoAdvanceTimeout);
-                autoAdvanceTimeout = null;
-            }
-            initQuiz();
-        }
+/* ============================= DRAWER / SETTINGS ============================= */
+const drawer = document.getElementById('drawer');
+const scrim = document.getElementById('scrim');
+document.getElementById('btn-settings').addEventListener('click', ()=>{
+  drawer.classList.add('open'); scrim.classList.add('show');
+});
+document.getElementById('btn-close-drawer').addEventListener('click', closeDrawer);
+scrim.addEventListener('click', closeDrawer);
+function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); }
 
-        // Review quiz (go back to first question)
-        function reviewQuiz() {
-            currentQuestionIndex = 0;
-            quizScreen.classList.remove('hidden');
-            completionScreen.classList.add('hidden');
-            displayQuestion();
-            updateProgress();
-        }
+document.getElementById('btn-notes').addEventListener('click', (e)=>{
+  showNotes = !showNotes;
+  e.currentTarget.classList.toggle('active', showNotes);
+  refreshFretUI();
+});
 
-        // Start the quiz when page loads
-        document.addEventListener('DOMContentLoaded', initQuiz);
-    </script>
+/* Tuning & capo */
+const selTuning = document.getElementById('sel-tuning');
+selTuning.addEventListener('change', ()=>{
+  tuningKey = selTuning.value;
+  tuningOffsets = TUNINGS[tuningKey].slice();
+  document.querySelector('#pill-tuning b').textContent = TUNING_LABELS[tuningKey];
+  refreshFretUI(); refreshStrumUI();
+});
+const rngCapo = document.getElementById('rng-capo');
+rngCapo.addEventListener('input', ()=>{
+  capo = parseInt(rngCapo.value,10);
+  document.getElementById('val-capo').textContent = capo;
+  document.querySelector('#pill-capo b').textContent = capo;
+  refreshFretUI(); refreshStrumUI();
+});
+
+/* scale overlay */
+document.getElementById('sel-root').addEventListener('change', (e)=>{
+  scaleRoot = e.target.value; refreshFretUI();
+});
+document.getElementById('sel-scale').addEventListener('change', (e)=>{
+  scaleType = e.target.value; refreshFretUI();
+});
+
+/* tone controls */
+function setToneMode(mode){
+  toneMode = mode;
+  document.getElementById('btn-clean').classList.toggle('on', mode==='clean');
+  document.getElementById('btn-drive').classList.toggle('on', mode==='drive');
+  document.querySelector('#pill-tone b').textContent = mode==='clean' ? 'Clean' : 'Electric';
+}
+document.getElementById('btn-clean').addEventListener('click', ()=>setToneMode('clean'));
+document.getElementById('btn-drive').addEventListener('click', ()=>setToneMode('drive'));
+
+function bindRange(id, valId, cb){
+  const el = document.getElementById(id);
+  const val = document.getElementById(valId);
+  el.addEventListener('input', ()=>{ val.textContent = el.value; cb(parseInt(el.value,10)); });
+}
+bindRange('rng-sustain','val-sustain', v=>sustainPct=v);
+bindRange('rng-tone','val-tone', v=>tonePct=v);
+bindRange('rng-reverb','val-reverb', v=>{ reverbPct=v; if (wetGain) wetGain.gain.value = v/100; });
+bindRange('rng-vol','val-vol', v=>{ volPct=v; if (masterGain) masterGain.gain.value = v/100; });
+
+/* ============================= METRONOME ============================= */
+function playClick(strong){
+  ensureAudio();
+  const osc = actx.createOscillator();
+  const g = actx.createGain();
+  osc.frequency.value = strong ? 1500 : 1000;
+  g.gain.value = 0.22;
+  g.gain.setTargetAtTime(0.0001, actx.currentTime+0.02, 0.02);
+  osc.connect(g).connect(masterGain);
+  osc.start();
+  osc.stop(actx.currentTime + 0.08);
+}
+let metroBeat = 0;
+let nextNoteTime = 0;
+let metroSchedulerId = null;
+function metroScheduler(){
+  while (nextNoteTime < actx.currentTime + 0.1){
+    const strong = metroBeat % 4 === 0;
+    const t = nextNoteTime;
+    setTimeout(()=>{ if(metroOn) playClick(strong); }, Math.max(0,(t-actx.currentTime)*1000));
+    nextNoteTime += 60.0/bpm;
+    metroBeat++;
+  }
+  metroSchedulerId = setTimeout(metroScheduler, 25);
+}
+document.getElementById('btn-metro').addEventListener('click', (e)=>{
+  ensureAudio();
+  metroOn = !metroOn;
+  e.target.textContent = metroOn ? 'Stop' : 'Start';
+  e.target.classList.toggle('on', metroOn);
+  if (metroOn){
+    metroBeat = 0;
+    nextNoteTime = actx.currentTime + 0.05;
+    metroScheduler();
+  } else {
+    clearTimeout(metroSchedulerId);
+  }
+});
+const rngBpm = document.getElementById('rng-bpm');
+rngBpm.addEventListener('input', ()=>{
+  bpm = parseInt(rngBpm.value,10);
+  document.getElementById('val-bpm').textContent = bpm;
+  document.querySelector('#pill-bpm b').textContent = bpm;
+});
+document.getElementById('btn-tap').addEventListener('click', ()=>{
+  const now = performance.now();
+  tapTimes.push(now);
+  tapTimes = tapTimes.filter(t=> now-t < 3000);
+  if (tapTimes.length>=2){
+    let intervals=[];
+    for (let i=1;i<tapTimes.length;i++) intervals.push(tapTimes[i]-tapTimes[i-1]);
+    const avg = intervals.reduce((a,b)=>a+b,0)/intervals.length;
+    bpm = Math.round(60000/avg);
+    bpm = Math.min(240, Math.max(40,bpm));
+    rngBpm.value = bpm;
+    document.getElementById('val-bpm').textContent = bpm;
+    document.querySelector('#pill-bpm b').textContent = bpm;
+  }
+});
+
+/* ============================= LOOPER ============================= */
+const btnRec = document.getElementById('btn-rec');
+const btnPlayLoop = document.getElementById('btn-play-loop');
+const btnClearLoop = document.getElementById('btn-clear-loop');
+const timeline = document.getElementById('looper-timeline');
+
+btnRec.addEventListener('click', ()=>{
+  ensureAudio();
+  if (!isRecording){
+    isRecording = true;
+    loopEvents = [];
+    loopStartT = actx.currentTime;
+    btnRec.textContent = 'Stop';
+    btnRec.classList.add('on');
+    document.getElementById('pill-rec').classList.add('rec-on');
+    document.querySelector('#pill-rec b').textContent = 'recording';
+  } else {
+    isRecording = false;
+    loopDuration = actx.currentTime - loopStartT;
+    btnRec.textContent = 'Record';
+    btnRec.classList.remove('on');
+    document.getElementById('pill-rec').classList.remove('rec-on');
+    document.querySelector('#pill-rec b').textContent = loopEvents.length ? loopEvents.length+' notes' : 'empty';
+    drawTimeline();
+  }
+});
+
+function drawTimeline(){
+  timeline.innerHTML='';
+  if (!loopDuration) return;
+  loopEvents.forEach(ev=>{
+    const tick = document.createElement('div');
+    tick.className='tick';
+    const pct = Math.min(100,(ev.t/loopDuration)*100);
+    tick.style.left = pct+'%';
+    tick.style.height = (30 - ev.stringIndex*4)+'px';
+    timeline.appendChild(tick);
+  });
+}
+
+function stopLoopPlayback(){
+  loopTimers.forEach(id=>clearTimeout(id));
+  loopTimers = [];
+  loopPlaying = false;
+  btnPlayLoop.textContent = 'Play';
+  btnPlayLoop.classList.remove('on');
+}
+
+function scheduleLoopCycle(){
+  if (!loopPlaying) return;
+  loopEvents.forEach(ev=>{
+    const id = setTimeout(()=>{
+      currentFrets[ev.stringIndex] = ev.fret;
+      pluckString(ev.stringIndex, {velocity:0.85, fromLoop:true, fretOverride: ev.fret});
+    }, ev.t*1000);
+    loopTimers.push(id);
+  });
+  const cycleId = setTimeout(scheduleLoopCycle, Math.max(200,loopDuration*1000));
+  loopTimers.push(cycleId);
+}
+
+btnPlayLoop.addEventListener('click', ()=>{
+  if (!loopEvents.length) return;
+  ensureAudio();
+  if (loopPlaying){
+    stopLoopPlayback();
+  } else {
+    loopPlaying = true;
+    btnPlayLoop.textContent = 'Stop';
+    btnPlayLoop.classList.add('on');
+    scheduleLoopCycle();
+  }
+});
+btnClearLoop.addEventListener('click', ()=>{
+  loopEvents = []; loopDuration = 0; stopLoopPlayback();
+  document.querySelector('#pill-rec b').textContent = 'empty';
+  drawTimeline();
+});
+
+/* ============================= INIT ============================= */
+buildFretboard();
+buildStrumZone();
+buildChordChips();
+refreshFretUI();
+refreshStrumUI();
+refreshChordChipsActive();
+
+// unlock audio on first touch anywhere
+document.body.addEventListener('pointerdown', function unlock(){
+  ensureAudio();
+  if (actx.state === 'suspended') actx.resume();
+}, { once:true });
+
+})();
+</script>
 </body>
 </html>
