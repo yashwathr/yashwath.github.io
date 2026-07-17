@@ -81,6 +81,93 @@ body{
 }
 .icon-btn.active{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; border-color: rgba(0,0,0,0.2);}
 
+/* ---------- Mode switch ---------- */
+#mode-switch{
+  display:flex; gap:6px; margin: 0 14px 10px; flex-shrink:0;
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding:4px;
+}
+.mode-btn{
+  flex:1; padding: 9px 0; text-align:center; border:none; border-radius:9px;
+  background:transparent; color: var(--cream-dim); font-family:'Inter'; font-weight:600; font-size:0.85rem;
+}
+.mode-btn.active{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; box-shadow: 0 2px 6px var(--shadow);}
+
+/* ---------- Hint banner ---------- */
+#hint-banner{
+  margin: 0 14px 10px; padding: 9px 12px; flex-shrink:0;
+  background: rgba(201,150,44,0.09); border: 1px solid rgba(201,150,44,0.25);
+  border-radius: 10px; font-size:0.78rem; color: var(--brass-bright); text-align:center;
+  line-height:1.35;
+}
+#hint-banner.hidden{ display:none; }
+
+/* ---------- Auto-strum toggle ---------- */
+#btn-autostrum-toggle{
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  margin: 0 14px 10px; padding: 11px 0; flex-shrink:0;
+  border-radius: 12px; border: 1px solid rgba(255,255,255,0.09);
+  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  color: var(--cream); font-family:'Inter'; font-weight:600; font-size:0.9rem;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+#btn-autostrum-toggle .as-dot{
+  width:8px; height:8px; border-radius:50%; background: var(--cream-dim);
+}
+#btn-autostrum-toggle .as-status{
+  font-family:'JetBrains Mono', monospace; font-size:0.7rem; color: var(--cream-dim);
+}
+#btn-autostrum-toggle.on{
+  background: linear-gradient(180deg, rgba(95,158,111,0.25), rgba(95,158,111,0.1));
+  border-color: rgba(95,158,111,0.5);
+}
+#btn-autostrum-toggle.on .as-dot{
+  background: var(--ok);
+  animation: as-pulse 0.6s ease-in-out infinite;
+}
+#btn-autostrum-toggle.on .as-status{ color: var(--ok); }
+@keyframes as-pulse{
+  0%,100%{ transform:scale(1); opacity:1; }
+  50%{ transform:scale(1.5); opacity:0.5; }
+}
+
+/* ---------- Easy chord grid (default / beginner view) ---------- */
+#chords-easy{
+  display:none;
+  flex: 1 1 auto; min-height:0;
+  margin: 0 14px 10px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 10px;
+  overflow-y:auto;
+}
+.chord-tile{
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  color: var(--cream);
+  font-family:'Fraunces', serif; font-weight:700; font-size:1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  min-height: 64px;
+  box-shadow: 0 3px 8px var(--shadow);
+}
+.chord-tile.active{
+  background: linear-gradient(180deg, var(--brass-bright), var(--brass));
+  color: #1a1208;
+  border-color: rgba(0,0,0,0.2);
+  box-shadow: 0 3px 10px rgba(201,150,44,0.4);
+}
+.chord-tile small{ font-size:0.6rem; font-weight:500; opacity:0.6; display:block; font-family:'Inter'; margin-top:2px;}
+
+/* ---------- Mode visibility ---------- */
+#app.mode-chords #fb-wrap,
+#app.mode-chords #fret-num-row,
+#app.mode-chords #chords,
+#app.mode-chords #statusstrip{ display:none; }
+#app.mode-chords #chords-easy{ display:grid; }
+
+#app.mode-fretboard #chords-easy{ display:none; }
+#app.mode-fretboard #hint-banner{ display:none; }
+
 /* ---------- Status strip ---------- */
 #statusstrip{
   display:flex; gap:6px; padding: 0 14px 8px; flex-shrink:0;
@@ -316,13 +403,25 @@ input[type=range]{ flex:1; }
   <div id="topbar">
     <div class="brand">
       <h1>Fretlight</h1>
-      <span>pocket guitar</span>
+      <span id="current-chord-label">open strings</span>
     </div>
     <div class="actions">
-      <button class="icon-btn" id="btn-notes" title="Toggle note names">&#9834;</button>
       <button class="icon-btn" id="btn-settings" title="Controls">&#9881;</button>
     </div>
   </div>
+
+  <div id="mode-switch">
+    <button class="mode-btn active" data-mode="chords">Chords</button>
+    <button class="mode-btn" data-mode="fretboard">Fretboard</button>
+  </div>
+
+  <div id="hint-banner">Tap a chord below, then swipe across the strings to strum. That's it.</div>
+
+  <button id="btn-autostrum-toggle">
+    <span class="as-dot"></span>
+    <span class="as-text">Auto-strum</span>
+    <span class="as-status">off</span>
+  </button>
 
   <div id="statusstrip">
     <div class="pill" id="pill-tuning">Tuning <b>Standard</b></div>
@@ -331,6 +430,8 @@ input[type=range]{ flex:1; }
     <div class="pill" id="pill-bpm">&#9835; <b>96</b> bpm</div>
     <div class="pill" id="pill-rec">Loop <b>empty</b></div>
   </div>
+
+  <div id="chords-easy"></div>
 
   <div id="fb-wrap">
     <div id="fb-scroll">
@@ -345,7 +446,7 @@ input[type=range]{ flex:1; }
   </div>
 
   <div id="strum-wrap">
-    <div id="strum-label">Strum zone — tap a string, or swipe across to strum</div>
+    <div id="strum-label">Tap a string, or swipe across to strum</div>
     <div id="strum-zone"></div>
   </div>
 </div>
@@ -378,6 +479,9 @@ input[type=range]{ flex:1; }
 
   <div class="drawer-section">
     <h3>&#9679; Fretboard overlay</h3>
+    <div class="toggle-row" style="margin-bottom:10px;">
+      <button class="btn" id="btn-notes">Show note names</button>
+    </div>
     <div class="row">
       <label>Root</label>
       <select id="sel-root">
@@ -423,6 +527,32 @@ input[type=range]{ flex:1; }
       <label>Volume</label>
       <input type="range" id="rng-vol" min="0" max="100" value="80">
       <span class="val" id="val-vol">80</span>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h3>&#9679; Auto-strum</h3>
+    <div class="btn-row">
+      <button class="btn" id="btn-as-toggle-drawer">Start</button>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <label>Speed</label>
+      <input type="range" id="rng-as-bpm" min="40" max="200" value="90">
+      <span class="val" id="val-as-bpm">90</span>
+    </div>
+    <div class="row">
+      <label>Pattern</label>
+      <select id="sel-as-pattern">
+        <option value="down">Steady downstrokes</option>
+        <option value="downup">Down-up alternating</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Note value</label>
+      <select id="sel-as-subdiv">
+        <option value="quarter">Quarter notes</option>
+        <option value="eighth">Eighth notes</option>
+      </select>
     </div>
   </div>
 
@@ -889,6 +1019,15 @@ strumZone.addEventListener('contextmenu', e=>e.preventDefault());
 
 /* ============================= CHORD CHIPS ============================= */
 const chordsRow = document.getElementById('chords');
+const chordsEasy = document.getElementById('chords-easy');
+const chordLabel = document.getElementById('current-chord-label');
+
+function chordSubtitle(name){
+  if (name.endsWith('7')) return '7th';
+  if (name.endsWith('m')) return 'minor';
+  return 'major';
+}
+
 function buildChordChips(){
   Object.keys(CHORDS).forEach(name=>{
     const chip = document.createElement('div');
@@ -898,16 +1037,31 @@ function buildChordChips(){
     chordsRow.appendChild(chip);
   });
 }
-chordsRow.addEventListener('pointerdown', (e)=>{
-  const chip = e.target.closest('.chord-chip');
-  if (!chip) return;
-  const name = chip.dataset.chord;
+
+function buildChordsEasy(){
+  const clearTile = document.createElement('button');
+  clearTile.className = 'chord-tile';
+  clearTile.dataset.chord = '__clear';
+  clearTile.innerHTML = 'Open<small>no chord</small>';
+  chordsEasy.appendChild(clearTile);
+  Object.keys(CHORDS).forEach(name=>{
+    const tile = document.createElement('button');
+    tile.className = 'chord-tile';
+    tile.dataset.chord = name;
+    tile.innerHTML = name + '<small>' + chordSubtitle(name) + '</small>';
+    chordsEasy.appendChild(tile);
+  });
+}
+
+function selectChord(name){
   if (name === '__clear'){
     currentFrets = [0,0,0,0,0,0];
     activeChordName = null;
+    chordLabel.textContent = 'open strings';
   } else {
     currentFrets = CHORDS[name].slice();
     activeChordName = name;
+    chordLabel.textContent = name + ' chord';
     ensureAudio();
     // gentle strum preview, low to high with slight delay
     let n=0;
@@ -921,9 +1075,21 @@ chordsRow.addEventListener('pointerdown', (e)=>{
   refreshFretUI();
   refreshStrumUI();
   refreshChordChipsActive();
+  dismissHint();
+}
+
+chordsRow.addEventListener('pointerdown', (e)=>{
+  const chip = e.target.closest('.chord-chip');
+  if (!chip) return;
+  selectChord(chip.dataset.chord);
+});
+chordsEasy.addEventListener('pointerdown', (e)=>{
+  const tile = e.target.closest('.chord-tile');
+  if (!tile) return;
+  selectChord(tile.dataset.chord);
 });
 function refreshChordChipsActive(){
-  document.querySelectorAll('.chord-chip').forEach(c=>{
+  document.querySelectorAll('.chord-chip, .chord-tile').forEach(c=>{
     c.classList.toggle('active', c.dataset.chord === activeChordName || (activeChordName===null && c.dataset.chord==='__clear'));
   });
 }
@@ -940,9 +1106,24 @@ function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove(
 
 document.getElementById('btn-notes').addEventListener('click', (e)=>{
   showNotes = !showNotes;
-  e.currentTarget.classList.toggle('active', showNotes);
+  e.currentTarget.classList.toggle('on', showNotes);
+  e.currentTarget.textContent = showNotes ? 'Hide note names' : 'Show note names';
   refreshFretUI();
 });
+
+/* ============================= MODE SWITCH & HINT ============================= */
+const appEl = document.getElementById('app');
+const hintBanner = document.getElementById('hint-banner');
+function setMode(mode){
+  appEl.classList.remove('mode-chords','mode-fretboard');
+  appEl.classList.add('mode-'+mode);
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===mode));
+}
+document.querySelectorAll('.mode-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> setMode(btn.dataset.mode));
+});
+function dismissHint(){ hintBanner.classList.add('hidden'); }
+document.getElementById('strum-zone').addEventListener('pointerdown', dismissHint, {once:true});
 
 /* Tuning & capo */
 const selTuning = document.getElementById('sel-tuning');
@@ -987,6 +1168,77 @@ bindRange('rng-sustain','val-sustain', v=>sustainPct=v);
 bindRange('rng-tone','val-tone', v=>tonePct=v);
 bindRange('rng-reverb','val-reverb', v=>{ reverbPct=v; if (wetGain) wetGain.gain.value = v/100; });
 bindRange('rng-vol','val-vol', v=>{ volPct=v; if (masterGain) masterGain.gain.value = v/100; });
+
+/* ============================= AUTO-STRUM ============================= */
+// Continuously re-strums whatever chord/fret is currently held, on a loop,
+// so the player's fretting hand is free to focus on changing shapes.
+let autoStrumOn = false;
+let asBPM = 90;
+let asPattern = 'down';   // 'down' = steady downstrokes, 'downup' = alternating
+let asSubdiv = 'quarter'; // 'quarter' or 'eighth'
+let asNextTime = 0;
+let asDownNext = true;
+let asTimerId = null;
+
+function strumHeldChord(isDown){
+  ensureAudio();
+  const order = isDown ? [0,1,2,3,4,5] : [5,4,3,2,1,0];
+  let n = 0;
+  let hitAny = false;
+  for (const s of order){
+    if (currentFrets[s] === null) continue;
+    hitAny = true;
+    const when = actx.currentTime + n*0.012;
+    pluckString(s, { velocity: isDown ? 0.9 : 0.72, when });
+    n++;
+  }
+  return hitAny;
+}
+
+function asScheduler(){
+  const beatLen = 60/asBPM * (asSubdiv === 'eighth' ? 0.5 : 1);
+  while (asNextTime < actx.currentTime + 0.12){
+    const isDown = asPattern === 'down' ? true : asDownNext;
+    const t = asNextTime;
+    setTimeout(()=>{ if (autoStrumOn) strumHeldChord(isDown); }, Math.max(0,(t-actx.currentTime)*1000));
+    asNextTime += beatLen;
+    asDownNext = !asDownNext;
+  }
+  asTimerId = setTimeout(asScheduler, 25);
+}
+
+function updateAutoStrumUI(){
+  const mainBtn = document.getElementById('btn-autostrum-toggle');
+  const drawerBtn = document.getElementById('btn-as-toggle-drawer');
+  mainBtn.classList.toggle('on', autoStrumOn);
+  mainBtn.querySelector('.as-status').textContent = autoStrumOn ? (asBPM + ' bpm') : 'off';
+  drawerBtn.textContent = autoStrumOn ? 'Stop' : 'Start';
+  drawerBtn.classList.toggle('on', autoStrumOn);
+}
+
+function startAutoStrum(){
+  ensureAudio();
+  if (actx.state === 'suspended') actx.resume();
+  autoStrumOn = true;
+  asDownNext = true;
+  asNextTime = actx.currentTime + 0.05;
+  asScheduler();
+  updateAutoStrumUI();
+  dismissHint();
+}
+function stopAutoStrum(){
+  autoStrumOn = false;
+  clearTimeout(asTimerId);
+  updateAutoStrumUI();
+}
+function toggleAutoStrum(){ autoStrumOn ? stopAutoStrum() : startAutoStrum(); }
+
+document.getElementById('btn-autostrum-toggle').addEventListener('click', toggleAutoStrum);
+document.getElementById('btn-as-toggle-drawer').addEventListener('click', toggleAutoStrum);
+
+bindRange('rng-as-bpm','val-as-bpm', v=>{ asBPM=v; if (autoStrumOn) updateAutoStrumUI(); });
+document.getElementById('sel-as-pattern').addEventListener('change', e=>{ asPattern = e.target.value; });
+document.getElementById('sel-as-subdiv').addEventListener('change', e=>{ asSubdiv = e.target.value; });
 
 /* ============================= METRONOME ============================= */
 function playClick(strong){
@@ -1131,9 +1383,12 @@ btnClearLoop.addEventListener('click', ()=>{
 buildFretboard();
 buildStrumZone();
 buildChordChips();
+buildChordsEasy();
 refreshFretUI();
 refreshStrumUI();
 refreshChordChipsActive();
+setMode('chords');
+updateAutoStrumUI();
 
 // unlock audio on first touch anywhere
 document.body.addEventListener('pointerdown', function unlock(){
