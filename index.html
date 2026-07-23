@@ -6,109 +6,138 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0e0b09">
+<meta name="theme-color" content="#0a0908">
 <title>Fretlight &mdash; Play Guitar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg: #0e0b09;
-  --bg-2: #161210;
-  --wood-dark: #241713;
-  --wood-mid: #3a2419;
-  --wood-light: #5a3823;
   --wood-board: #1c120e;
   --brass: #c9962c;
   --brass-bright: #f0c464;
-  --cream: #eee6d6;
-  --cream-dim: #b8ac96;
-  --string: #d9d2bf;
+  --cream: #f5f1e6;
+  --cream-dim: #c9c2b0;
   --danger: #c0463f;
-  --danger-bright: #e8665c;
-  --ok: #5f9e6f;
-  --shadow: rgba(0,0,0,0.55);
-  --radius: 14px;
+  --danger-bright: #ef6d64;
+  --ok: #59c98a;
+
+  --glass-fill: rgba(255,255,255,0.10);
+  --glass-fill-strong: rgba(255,255,255,0.18);
+  --glass-border: rgba(255,255,255,0.28);
+  --glass-border-soft: rgba(255,255,255,0.14);
+  --glass-highlight: rgba(255,255,255,0.5);
+  --glass-shadow: rgba(0,0,0,0.45);
+  --radius: 16px;
   font-size: 16px;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
 html,body{
   margin:0; padding:0; height:100%; overflow:hidden;
-  background: var(--bg);
+  background: #0a0908;
   color: var(--cream);
   font-family: 'Inter', sans-serif;
   user-select:none; -webkit-user-select:none;
   touch-action: manipulation;
 }
-body{
+body::before{
+  content:'';
+  position:fixed; inset:-10%;
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(201,150,44,0.10), transparent 55%),
-    var(--bg);
+    radial-gradient(circle at 15% 18%, rgba(240,196,100,0.32), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(127,217,196,0.20), transparent 46%),
+    radial-gradient(circle at 80% 88%, rgba(232,132,156,0.18), transparent 45%),
+    radial-gradient(circle at 18% 82%, rgba(240,196,100,0.16), transparent 42%),
+    #0a0908;
+  filter: blur(70px);
+  z-index:0;
+  animation: drift 28s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  0%{ transform: scale(1) translate(0,0); }
+  100%{ transform: scale(1.09) translate(-2.5%, 2.5%); }
 }
 .mono{font-family:'JetBrains Mono', monospace;}
-.display{font-family:'Fraunces', serif;}
+.display{font-family:'Poppins', sans-serif;}
 
 #app{
   display:flex; flex-direction:column;
   height:100vh; height:100dvh;
   max-width:900px; margin:0 auto;
-  position:relative;
+  position:relative; z-index:1;
 }
 
 /* ---------- Top bar ---------- */
 #topbar{
   display:flex; align-items:center; justify-content:space-between;
-  padding: 10px 14px 8px;
+  padding: 14px 16px 8px;
   flex-shrink:0;
 }
 #topbar .brand{
-  display:flex; align-items:baseline; gap:8px;
+  display:flex; align-items:baseline; gap:9px;
 }
 #topbar .brand h1{
-  font-family:'Fraunces', serif; font-weight:700; font-size:1.35rem; margin:0;
-  color: var(--brass-bright);
-  letter-spacing:0.01em;
+  font-family:'Poppins', sans-serif; font-weight:700; font-size:1.4rem; margin:0;
+  color: var(--cream);
+  letter-spacing:-0.01em;
 }
-#topbar .brand span{ font-size:0.68rem; color:var(--cream-dim); font-family:'JetBrains Mono', monospace; letter-spacing:0.06em; text-transform:uppercase;}
+#topbar .brand span{ font-size:0.72rem; color:var(--brass-bright); font-family:'JetBrains Mono', monospace; letter-spacing:0.02em;}
 #topbar .actions{ display:flex; gap:8px; }
 .icon-btn{
-  width:38px; height:38px; border-radius:10px;
-  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
-  border:1px solid rgba(255,255,255,0.08);
+  width:42px; height:42px; border-radius:14px;
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border:1px solid var(--glass-border);
   color: var(--cream);
   display:flex; align-items:center; justify-content:center;
-  font-size:1.05rem;
-  box-shadow: 0 2px 4px var(--shadow);
+  font-size:1.1rem;
+  box-shadow: 0 4px 14px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
-.icon-btn.active{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; border-color: rgba(0,0,0,0.2);}
+.icon-btn.active{ background: linear-gradient(160deg, rgba(240,196,100,0.4), rgba(201,150,44,0.15)); border-color: rgba(240,196,100,0.6);}
 
 /* ---------- Mode switch ---------- */
 #mode-switch{
-  display:flex; gap:6px; margin: 0 14px 10px; flex-shrink:0;
-  background: rgba(255,255,255,0.04); border-radius: 12px; padding:4px;
+  display:flex; gap:4px; margin: 0 14px 10px; flex-shrink:0;
+  padding:5px; border-radius:18px;
+  background: var(--glass-fill);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border-soft);
+  box-shadow: 0 4px 16px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.18);
 }
 .mode-btn{
-  flex:1; padding: 9px 0; text-align:center; border:none; border-radius:9px;
-  background:transparent; color: var(--cream-dim); font-family:'Inter'; font-weight:600; font-size:0.85rem;
+  flex:1; padding: 10px 0; text-align:center; border:none; border-radius:13px;
+  background:transparent; color: var(--cream-dim); font-family:'Inter'; font-weight:600; font-size:0.84rem;
 }
-.mode-btn.active{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; box-shadow: 0 2px 6px var(--shadow);}
+.mode-btn.active{
+  background: linear-gradient(160deg, rgba(255,255,255,0.32), rgba(255,255,255,0.10));
+  color: var(--cream);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.55);
+}
 
 /* ---------- Hint banner ---------- */
 #hint-banner{
-  margin: 0 14px 10px; padding: 9px 12px; flex-shrink:0;
-  background: rgba(201,150,44,0.09); border: 1px solid rgba(201,150,44,0.25);
-  border-radius: 10px; font-size:0.78rem; color: var(--brass-bright); text-align:center;
+  margin: 0 14px 10px; padding: 10px 14px; flex-shrink:0;
+  background: linear-gradient(160deg, rgba(240,196,100,0.18), rgba(240,196,100,0.05));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(240,196,100,0.32);
+  border-radius: 16px; font-size:0.79rem; color: var(--brass-bright); text-align:center;
   line-height:1.35;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
 }
 #hint-banner.hidden{ display:none; }
 
 /* ---------- Auto-strum toggle ---------- */
 #btn-autostrum-toggle{
   display:flex; align-items:center; justify-content:center; gap:8px;
-  margin: 0 14px 10px; padding: 11px 0; flex-shrink:0;
-  border-radius: 12px; border: 1px solid rgba(255,255,255,0.09);
-  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  margin: 0 14px 10px; padding: 12px 0; flex-shrink:0;
+  border-radius: 16px; border: 1px solid var(--glass-border);
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
   color: var(--cream); font-family:'Inter'; font-weight:600; font-size:0.9rem;
-  box-shadow: 0 2px 6px var(--shadow);
+  box-shadow: 0 4px 16px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
 #btn-autostrum-toggle .as-dot{
   width:8px; height:8px; border-radius:50%; background: var(--cream-dim);
@@ -117,8 +146,8 @@ body{
   font-family:'JetBrains Mono', monospace; font-size:0.7rem; color: var(--cream-dim);
 }
 #btn-autostrum-toggle.on{
-  background: linear-gradient(180deg, rgba(95,158,111,0.25), rgba(95,158,111,0.1));
-  border-color: rgba(95,158,111,0.5);
+  background: linear-gradient(160deg, rgba(89,201,138,0.32), rgba(89,201,138,0.1));
+  border-color: rgba(89,201,138,0.55);
 }
 #btn-autostrum-toggle.on .as-dot{
   background: var(--ok);
@@ -141,32 +170,44 @@ body{
   overflow-y:auto;
 }
 .chord-tile{
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.09);
-  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   color: var(--cream);
-  font-family:'Fraunces', serif; font-weight:700; font-size:1.4rem;
-  display:flex; align-items:center; justify-content:center;
+  font-family:'Poppins', sans-serif; font-weight:700; font-size:1.35rem;
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
   min-height: 64px;
-  box-shadow: 0 3px 8px var(--shadow);
+  box-shadow: 0 6px 18px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
 .chord-tile.active{
-  background: linear-gradient(180deg, var(--brass-bright), var(--brass));
-  color: #1a1208;
-  border-color: rgba(0,0,0,0.2);
-  box-shadow: 0 3px 10px rgba(201,150,44,0.4);
+  background: linear-gradient(160deg, rgba(240,196,100,0.5), rgba(201,150,44,0.2));
+  color: #2a1c08;
+  border-color: rgba(240,196,100,0.7);
+  box-shadow: 0 6px 22px rgba(201,150,44,0.45), inset 0 1px 0 rgba(255,255,255,0.6);
 }
-.chord-tile small{ font-size:0.6rem; font-weight:500; opacity:0.6; display:block; font-family:'Inter'; margin-top:2px;}
+.chord-tile small{ font-size:0.6rem; font-weight:500; opacity:0.65; display:block; font-family:'Inter'; margin-top:2px;}
 
 /* ---------- Mode visibility ---------- */
 #app.mode-chords #fb-wrap,
 #app.mode-chords #fret-num-row,
 #app.mode-chords #chords,
-#app.mode-chords #statusstrip{ display:none; }
+#app.mode-chords #statusstrip,
+#app.mode-chords #songs-view{ display:none; }
 #app.mode-chords #chords-easy{ display:grid; }
 
 #app.mode-fretboard #chords-easy{ display:none; }
 #app.mode-fretboard #hint-banner{ display:none; }
+#app.mode-fretboard #songs-view{ display:none; }
+
+#app.mode-songs #fb-wrap,
+#app.mode-songs #fret-num-row,
+#app.mode-songs #chords-easy,
+#app.mode-songs #chords,
+#app.mode-songs #statusstrip,
+#app.mode-songs #hint-banner{ display:none; }
+#app.mode-songs #songs-view{ display:flex; }
 
 /* ---------- Status strip ---------- */
 #statusstrip{
@@ -177,14 +218,15 @@ body{
 .pill{
   font-family:'JetBrains Mono', monospace; font-size:0.68rem;
   color: var(--cream-dim);
-  background: rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.07);
-  padding: 4px 9px; border-radius: 100px; white-space:nowrap;
+  background: var(--glass-fill);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border:1px solid var(--glass-border-soft);
+  padding: 5px 10px; border-radius: 100px; white-space:nowrap;
   display:flex; align-items:center; gap:5px;
 }
 .pill b{ color: var(--brass-bright); font-weight:600;}
-.pill.rec-on{ color: var(--danger-bright); border-color: rgba(224,80,70,0.4); background: rgba(192,70,63,0.12);}
-.dot-blink{ width:6px;height:6px;border-radius:50%; background:var(--danger-bright); animation: blink 1s infinite;}
+.pill.rec-on{ color: var(--danger-bright); border-color: rgba(239,109,100,0.4); background: rgba(192,70,63,0.16);}
 @keyframes blink{ 50%{opacity:0.2;} }
 
 /* ---------- Fretboard ---------- */
@@ -192,16 +234,22 @@ body{
   flex: 1 1 auto;
   min-height: 0;
   margin: 0 10px;
-  border-radius: var(--radius);
+  padding: 6px;
+  border-radius: 22px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 6px 18px var(--shadow);
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 28px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
 #fb-scroll{
   height:100%; overflow-x:auto; overflow-y:hidden;
+  border-radius: 16px;
   background:
     repeating-linear-gradient(90deg, rgba(0,0,0,0.10) 0px, transparent 2px, transparent 60px),
-    linear-gradient(180deg, var(--wood-board), #140d0a);
+    linear-gradient(180deg, rgba(30,19,15,0.7), rgba(20,13,10,0.82));
 }
 #fb-grid{
   height:100%;
@@ -220,7 +268,7 @@ body{
 .string-line{
   position:absolute; left:0; right:0; top:50%;
   transform: translateY(-50%);
-  background: linear-gradient(180deg, #efe9da, #a89c82);
+  background: linear-gradient(180deg, #f5efe0, #a89c82);
   box-shadow: 0 0 6px rgba(0,0,0,0.5);
   border-radius:4px;
   pointer-events:none;
@@ -238,13 +286,13 @@ body{
   border:none; background:transparent;
   display:flex; align-items:center; justify-content:center;
   padding:0;
-  border-right: 2px solid rgba(210,200,180,0.20);
+  border-right: 2px solid rgba(255,255,255,0.14);
 }
 .fret-cell:first-child{
   border-right: 5px solid var(--brass);
   background: linear-gradient(90deg, rgba(0,0,0,0.35), transparent);
 }
-.fret-row:nth-child(odd) .fret-cell{ background-color: rgba(255,255,255,0.012); }
+.fret-row:nth-child(odd) .fret-cell{ background-color: rgba(255,255,255,0.014); }
 .inlay{
   position:absolute; width:11px; height:11px; border-radius:50%;
   background: radial-gradient(circle at 35% 30%, #7a6a4a, #4a3d28);
@@ -264,12 +312,12 @@ body{
 }
 @keyframes pop{ from{ transform:scale(0.4); } to{ transform:scale(1); } }
 .note-label{
-  font-family:'JetBrains Mono', monospace; font-size:0.58rem; color: rgba(238,230,214,0.4);
+  font-family:'JetBrains Mono', monospace; font-size:0.58rem; color: rgba(245,241,230,0.4);
   z-index:2; pointer-events:none;
 }
 .fret-cell.scale-note::after{
   content:''; position:absolute; width:8px; height:8px; border-radius:50%;
-  border: 1.5px solid rgba(95,158,111,0.85); top:6px; right:6px;
+  border: 1.5px solid rgba(89,201,138,0.85); top:6px; right:6px;
 }
 .fret-cell.scale-root::after{
   background: var(--ok); border-color: var(--ok);
@@ -289,18 +337,20 @@ body{
 }
 #chords::-webkit-scrollbar{display:none;}
 .chord-chip{
-  font-family:'Fraunces', serif; font-weight:600; font-size:0.95rem;
+  font-family:'Poppins', sans-serif; font-weight:600; font-size:0.92rem;
   color: var(--cream);
-  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 7px 15px;
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 8px 16px;
   flex-shrink:0;
-  box-shadow: 0 2px 4px var(--shadow);
+  box-shadow: 0 3px 10px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
 .chord-chip.active{
-  background: linear-gradient(180deg, var(--brass), #a6741e);
-  color:#1a1208; border-color:rgba(0,0,0,0.2);
+  background: linear-gradient(160deg, rgba(240,196,100,0.5), rgba(201,150,44,0.2));
+  color:#2a1c08; border-color: rgba(240,196,100,0.7);
 }
 .chord-chip.clear{ color: var(--cream-dim); font-family:'Inter'; font-weight:500; font-size:0.8rem;}
 
@@ -308,87 +358,185 @@ body{
 #strum-wrap{
   flex-shrink:0;
   margin: 0 10px 8px;
-  border-radius: var(--radius);
+  padding: 6px;
+  border-radius: 22px;
   overflow:hidden;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 6px 18px var(--shadow);
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 28px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
 #strum-label{
   font-family:'JetBrains Mono', monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.08em;
-  color: var(--cream-dim); text-align:center; padding: 5px 0 2px;
-  background: linear-gradient(180deg, #221812, #1a120d);
+  color: var(--cream-dim); text-align:center; padding: 6px 0 4px;
 }
 #strum-zone{
   display:flex; flex-direction:column;
   height: 30vh; min-height:170px; max-height:230px;
-  background: linear-gradient(180deg, #1a120d, #100b08);
+  background: linear-gradient(180deg, rgba(26,18,13,0.55), rgba(16,11,8,0.68));
+  border-radius: 16px;
   touch-action: none;
 }
 .string-bar{
-  flex:1; position:relative; display:flex; align-items:center; padding: 0 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  flex:1; position:relative; display:flex; align-items:center; gap:10px; padding: 0 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .string-bar .physical-string{
-  position:absolute; left:12px; right:12px; top:50%; transform:translateY(-50%);
-  background: linear-gradient(180deg, #efe9da, #9a8e73);
+  position:absolute; left:60px; right:14px; top:50%; transform:translateY(-50%);
+  background: linear-gradient(180deg, #f5efe0, #9a8e73);
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  z-index:1;
 }
 .string-bar.hit .physical-string{ animation: vibrate 0.45s ease-out; }
+.string-bar .as-toggle{
+  position:relative; z-index:3; flex-shrink:0;
+  width:34px; height:34px; border-radius:50%;
+  background: linear-gradient(160deg, rgba(240,196,100,0.38), rgba(240,196,100,0.14));
+  border:1px solid rgba(240,196,100,0.5);
+  color:#2a1c08;
+  font-family:'Poppins', sans-serif; font-weight:700; font-size:0.78rem;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.string-bar .as-toggle.off{
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.16);
+  color: var(--cream-dim);
+  box-shadow:none;
+}
 .string-bar .meta{
-  position:relative; z-index:2; display:flex; justify-content:space-between; width:100%;
-  font-family:'JetBrains Mono', monospace; font-size:0.68rem; color: rgba(238,230,214,0.55);
+  position:relative; z-index:2; flex:1;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:'JetBrains Mono', monospace; font-size:0.66rem; color: rgba(245,241,230,0.55);
   pointer-events:none;
 }
-.string-bar .meta b{ color: var(--brass-bright); font-size:0.78rem; }
-.string-bar.muted{ opacity:0.3; }
+.string-bar .meta b{ color: var(--brass-bright); font-size:0.76rem; }
+.string-bar.muted .meta{ opacity:0.35; }
+
+/* ---------- Songs / practice ---------- */
+#songs-view{
+  display:none; flex-direction:column; flex:1 1 auto; min-height:0;
+  margin: 0 14px 10px; gap:10px; overflow:hidden;
+}
+#songs-list{ display:flex; flex-direction:column; gap:8px; overflow-y:auto; flex:1; min-height:0; }
+#songs-list.hide{ display:none; }
+.song-card{
+  display:flex; flex-direction:column; align-items:flex-start; text-align:left;
+  padding: 13px 15px; border-radius: 18px;
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 6px 18px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  color: var(--cream); flex-shrink:0;
+}
+.song-card .song-title{ font-family:'Poppins', sans-serif; font-weight:700; font-size:1.02rem; }
+.song-card .song-artist{ font-size:0.76rem; color: var(--cream-dim); margin-top:2px; }
+.song-card .song-meta{ display:flex; gap:6px; margin-top:9px; flex-wrap:wrap; }
+.song-meta .tag{
+  font-family:'JetBrains Mono', monospace; font-size:0.6rem; padding:4px 9px; border-radius:100px;
+  background: rgba(255,255,255,0.08); color: var(--cream-dim); border:1px solid rgba(255,255,255,0.1);
+}
+#song-detail{ display:none; flex-direction:column; flex:1; min-height:0; gap:12px; }
+#song-detail.show{ display:flex; }
+.song-detail-head{ display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.btn-back{
+  width:38px; height:38px; border-radius:12px; flex-shrink:0;
+  background: var(--glass-fill); border:1px solid var(--glass-border-soft); color:var(--cream);
+  display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+  backdrop-filter: blur(14px);
+}
+.song-detail-head h2{ font-family:'Poppins', sans-serif; font-size:1.08rem; margin:0; color:var(--cream); }
+.song-detail-head span{ display:block; font-size:0.74rem; color:var(--cream-dim); margin-top:1px; }
+#prog-strip{ display:flex; gap:8px; overflow-x:auto; padding:4px 2px; flex-shrink:0; }
+.prog-chip{
+  flex-shrink:0; padding: 11px 17px; border-radius: 14px;
+  font-family:'Poppins', sans-serif; font-weight:700; font-size:1rem;
+  background: var(--glass-fill); border:1px solid var(--glass-border-soft); color: var(--cream-dim);
+}
+.prog-chip.current{
+  background: linear-gradient(160deg, rgba(240,196,100,0.55), rgba(201,150,44,0.2));
+  border-color: rgba(240,196,100,0.75); color:#2a1c08;
+  box-shadow: 0 4px 14px rgba(201,150,44,0.4);
+}
+.prog-chip.next{ border-color: rgba(240,196,100,0.45); color: var(--brass-bright); }
+.song-info-row{ display:flex; gap:8px; flex-shrink:0; }
+.song-info-card{
+  flex:1; padding: 10px 8px; border-radius: 14px; text-align:center;
+  background: var(--glass-fill); border:1px solid var(--glass-border-soft);
+}
+.song-info-card .label{ font-size:0.6rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--cream-dim); }
+.song-info-card .value{ font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--brass-bright); font-size:0.9rem; margin-top:3px;}
+#btn-song-play{
+  padding: 14px 0; border-radius: 16px; text-align:center; flex-shrink:0;
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border:1px solid var(--glass-border); color:var(--cream);
+  font-family:'Inter'; font-weight:700; font-size:0.94rem;
+  box-shadow: 0 4px 16px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+#btn-song-play.on{
+  background: linear-gradient(160deg, rgba(89,201,138,0.32), rgba(89,201,138,0.1));
+  border-color: rgba(89,201,138,0.55);
+}
 
 /* ---------- Drawer ---------- */
 #scrim{
-  position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:9;
+  position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:9;
   opacity:0; pointer-events:none; transition: opacity 0.2s;
+  backdrop-filter: blur(2px);
 }
 #scrim.show{ opacity:1; pointer-events:auto; }
 #drawer{
   position:absolute; left:0; right:0; bottom:0; z-index:10;
-  background: linear-gradient(180deg, var(--bg-2), var(--bg));
-  border-top: 1px solid rgba(255,255,255,0.09);
-  border-radius: 18px 18px 0 0;
+  background: linear-gradient(180deg, rgba(24,19,16,0.72), rgba(10,8,7,0.88));
+  backdrop-filter: blur(34px) saturate(180%);
+  -webkit-backdrop-filter: blur(34px) saturate(180%);
+  border-top: 1px solid var(--glass-border);
+  border-radius: 26px 26px 0 0;
   transform: translateY(100%);
   transition: transform 0.25s ease;
   max-height: 82%;
   overflow-y:auto;
   padding: 14px 18px 26px;
-  box-shadow: 0 -8px 24px var(--shadow);
+  box-shadow: 0 -12px 40px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
 }
 #drawer.open{ transform: translateY(0); }
-.drawer-handle{ width:36px; height:4px; border-radius:2px; background:rgba(255,255,255,0.2); margin:0 auto 14px; }
+.drawer-handle{ width:36px; height:4px; border-radius:2px; background:rgba(255,255,255,0.25); margin:0 auto 14px; }
 .drawer-section{ margin-bottom: 20px; }
 .drawer-section h3{
-  font-family:'Fraunces', serif; font-size:0.95rem; margin: 0 0 10px; color: var(--brass-bright);
-  display:flex; align-items:center; gap:8px;
+  font-family:'Poppins', sans-serif; font-size:0.92rem; margin: 0 0 10px; color: var(--brass-bright);
+  display:flex; align-items:center; gap:8px; font-weight:600;
 }
+.drawer-section .hint-sm{ font-size:0.72rem; color: var(--cream-dim); margin: -4px 0 10px; line-height:1.4; }
 .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
 .row label{ font-size:0.82rem; color: var(--cream-dim); flex-shrink:0; }
 .row .val{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color: var(--brass-bright); min-width:34px; text-align:right;}
 select, input[type=range]{ accent-color: var(--brass); }
 select{
-  background: var(--wood-dark); color: var(--cream); border:1px solid rgba(255,255,255,0.1);
-  border-radius:8px; padding:7px 10px; font-family:'Inter'; font-size:0.85rem; flex:1;
+  background: rgba(255,255,255,0.07); color: var(--cream); border:1px solid var(--glass-border-soft);
+  border-radius:10px; padding:8px 10px; font-family:'Inter'; font-size:0.85rem; flex:1;
 }
 input[type=range]{ flex:1; }
 .btn-row{ display:flex; gap:8px; flex-wrap:wrap; }
 .btn{
   flex:1; min-width:70px; text-align:center;
-  padding: 9px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.09);
-  background: linear-gradient(180deg, var(--wood-mid), var(--wood-dark));
+  padding: 10px 10px; border-radius:12px; border:1px solid var(--glass-border);
+  background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   color: var(--cream); font-size:0.82rem; font-weight:600;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
 }
-.btn.on{ background: linear-gradient(180deg, var(--brass), #a6741e); color:#1a1208; }
-.btn.danger{ background: linear-gradient(180deg, var(--danger-bright), var(--danger)); color:#2a0d0a;}
+.btn.on{ background: linear-gradient(160deg, rgba(240,196,100,0.5), rgba(201,150,44,0.2)); border-color: rgba(240,196,100,0.7); color:#2a1c08; }
+.btn.danger{ background: linear-gradient(160deg, rgba(239,109,100,0.5), rgba(192,70,63,0.22)); border-color: rgba(239,109,100,0.6); color:#2a0d0a;}
 .toggle-row{ display:flex; gap:8px; }
 .toggle-row .btn{ flex:1; }
 #looper-timeline{
-  height:34px; border-radius:8px; background: rgba(255,255,255,0.04);
+  height:34px; border-radius:8px; background: rgba(255,255,255,0.05);
   position:relative; overflow:hidden; margin-top:8px;
 }
 .tick{ position:absolute; bottom:0; width:3px; border-radius:2px; background: var(--brass-bright); }
@@ -413,6 +561,7 @@ input[type=range]{ flex:1; }
   <div id="mode-switch">
     <button class="mode-btn active" data-mode="chords">Chords</button>
     <button class="mode-btn" data-mode="fretboard">Fretboard</button>
+    <button class="mode-btn" data-mode="songs">Songs</button>
   </div>
 
   <div id="hint-banner">Tap a chord below, then swipe across the strings to strum. That's it.</div>
@@ -432,6 +581,26 @@ input[type=range]{ flex:1; }
   </div>
 
   <div id="chords-easy"></div>
+
+  <div id="songs-view">
+    <div id="songs-list"></div>
+    <div id="song-detail">
+      <div class="song-detail-head">
+        <button class="btn-back" id="btn-song-back">&larr;</button>
+        <div>
+          <h2 id="song-detail-title">Title</h2>
+          <span id="song-detail-artist">Artist</span>
+        </div>
+      </div>
+      <div id="prog-strip"></div>
+      <div class="song-info-row">
+        <div class="song-info-card"><div class="label">Tempo</div><div class="value" id="song-detail-bpm">&mdash;</div></div>
+        <div class="song-info-card"><div class="label">Strum</div><div class="value" id="song-detail-strum">&mdash;</div></div>
+        <div class="song-info-card"><div class="label">Level</div><div class="value" id="song-detail-diff">&mdash;</div></div>
+      </div>
+      <button id="btn-song-play">Start practice &#9654;</button>
+    </div>
+  </div>
 
   <div id="fb-wrap">
     <div id="fb-scroll">
@@ -532,8 +701,10 @@ input[type=range]{ flex:1; }
 
   <div class="drawer-section">
     <h3>&#9679; Auto-strum</h3>
+    <div class="hint-sm">Tap the letter badges on the strings in the strum zone to choose which strings play automatically.</div>
     <div class="btn-row">
       <button class="btn" id="btn-as-toggle-drawer">Start</button>
+      <button class="btn" id="btn-as-reset-strings">Reset strings</button>
     </div>
     <div class="row" style="margin-top:12px;">
       <label>Speed</label>
@@ -586,9 +757,8 @@ input[type=range]{ flex:1; }
 "use strict";
 
 /* ============================= DATA ============================= */
-// low E, A, D, G, B, high e — index 0..5
 const OPEN_FREQ = [82.4069, 110.0000, 146.8324, 195.9977, 246.9417, 329.6276];
-const OPEN_PC   = [4, 9, 2, 7, 11, 4]; // pitch class C=0
+const OPEN_PC   = [4, 9, 2, 7, 11, 4];
 const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const STRING_LABELS = ['E','A','D','G','B','e'];
 const NUM_FRETS = 15;
@@ -607,7 +777,6 @@ const TUNING_LABELS = {
   fulldown:'Full-step down', openg:'Open G', opend:'Open D', dadgad:'DADGAD'
 };
 
-// chord shapes: fret per string low E..high e, null = muted string
 const CHORDS = {
   'E':  [0,2,2,1,0,0],
   'Em': [0,2,2,0,0,0],
@@ -632,11 +801,22 @@ const SCALES = {
   minpent: [0,3,5,7,10],
 };
 
+const SONGS = [
+  { title:"Let It Be", artist:"The Beatles", bpm:76, difficulty:"Beginner", chords:["C","G","Am","F"], strum:"D D U U D U" },
+  { title:"Stand By Me", artist:"Ben E. King", bpm:118, difficulty:"Beginner", chords:["C","Am","F","G"], strum:"D D D D" },
+  { title:"I'm Yours", artist:"Jason Mraz", bpm:130, difficulty:"Beginner", chords:["G","D","Em","C"], strum:"D D U U D U" },
+  { title:"Knockin' on Heaven's Door", artist:"Bob Dylan", bpm:72, difficulty:"Beginner", chords:["G","D","Am","C"], strum:"D D U D" },
+  { title:"Three Little Birds", artist:"Bob Marley", bpm:148, difficulty:"Beginner", chords:["A","D","E"], strum:"Off-beat skank" },
+  { title:"Sweet Home Alabama", artist:"Lynyrd Skynyrd", bpm:98, difficulty:"Beginner", chords:["D","C","G"], strum:"D D U D U" },
+  { title:"Twist and Shout", artist:"The Beatles", bpm:124, difficulty:"Beginner", chords:["D","G","A"], strum:"D D D D" },
+  { title:"Horse With No Name", artist:"America", bpm:130, difficulty:"Beginner", chords:["Em","D"], strum:"D D U U D U" },
+];
+
 /* ============================= STATE ============================= */
 let tuningKey = 'standard';
 let tuningOffsets = TUNINGS.standard.slice();
 let capo = 0;
-let currentFrets = [0,0,0,0,0,0]; // null = muted
+let currentFrets = [0,0,0,0,0,0];
 let activeChordName = null;
 let showNotes = false;
 let scaleRoot = 'C';
@@ -712,7 +892,6 @@ function makeDriveCurve(amount){
   return curve;
 }
 
-// Karplus-Strong plucked string synthesis
 function karplusBuffer(freq, durationSec, decayFactor){
   const sr = actx.sampleRate;
   const N = Math.max(4, Math.round(sr/freq));
@@ -751,11 +930,11 @@ function pluckString(stringIndex, opts){
   opts = opts || {};
   const fret = opts.fretOverride !== undefined ? opts.fretOverride : currentFrets[stringIndex];
   const freq = noteFreq(stringIndex, fret);
-  if (freq === null) return; // muted
+  if (freq === null) return;
   ensureAudio();
   if (actx.state === 'suspended') actx.resume();
 
-  const decay = 0.975 + (sustainPct/100)*0.023; // 0.975 - 0.998
+  const decay = 0.975 + (sustainPct/100)*0.023;
   const dur = 1.2 + (sustainPct/100)*2.2;
   const buf = karplusBuffer(freq, dur, decay);
 
@@ -813,7 +992,7 @@ function buildFretboard(){
 
     const line = document.createElement('div');
     line.className = 'string-line';
-    const thickness = 1.5 + (5-s)*0.7; // low E thickest -> row index 0 is low E per our order, but displayed order handled below
+    const thickness = 1.5 + (5-s)*0.7;
     line.style.height = thickness + 'px';
     row.appendChild(line);
 
@@ -847,13 +1026,11 @@ function buildFretboard(){
     rowEls[s] = row;
   }
 
-  // display order: high e on top .. low E on bottom (tab convention)
   fbGrid.style.display = 'grid';
   for (let s=0; s<6; s++){
-    rowEls[s].style.order = (5 - s); // s=5 (high e) -> order 0 (top)
+    rowEls[s].style.order = (5 - s);
   }
 
-  // fret number ruler (aligned 1:1 with the fret-cell columns, including the open/nut column)
   fretNumRow.innerHTML = '';
   for (let f=0; f<=NUM_FRETS; f++){
     const d = document.createElement('div');
@@ -865,7 +1042,7 @@ function buildFretboard(){
 
 function setFret(stringIndex, fret){
   if (currentFrets[stringIndex] === fret){
-    currentFrets[stringIndex] = 0; // tap again to release to open
+    currentFrets[stringIndex] = 0;
   } else {
     currentFrets[stringIndex] = fret;
   }
@@ -887,9 +1064,6 @@ function refreshFretUI(){
       if (capo>0 && f>0 && f<capo) cell.classList.add('capo-behind');
 
       const isMuted = currentFrets[s] === null;
-      const isActive = !isMuted && (
-        (currentFrets[s] === f) || (currentFrets[s]===0 && f===0 && !isMuted)
-      );
       if (!isMuted && currentFrets[s] === f && f>0){
         const dot = document.createElement('div');
         dot.className = 'finger-dot';
@@ -901,7 +1075,6 @@ function refreshFretUI(){
         label.textContent = showNotes ? (noteNameFor(s,f) || '') : '';
       }
 
-      // scale overlay
       cell.classList.remove('scale-note','scale-root');
       if (scaleType !== 'none'){
         const pc = (OPEN_PC[s] + tuningOffsets[s] + f) % 12;
@@ -914,12 +1087,7 @@ function refreshFretUI(){
         }
       }
     });
-    // open "fret 0" muted indicator
-    if (currentFrets[s] === null){
-      row.style.opacity = 0.35;
-    } else {
-      row.style.opacity = 1;
-    }
+    row.style.opacity = (currentFrets[s] === null) ? 0.35 : 1;
   }
 }
 
@@ -939,20 +1107,34 @@ function animateString(stringIndex){
 /* ============================= STRUM ZONE UI ============================= */
 const strumZone = document.getElementById('strum-zone');
 const strumBars = [];
+let asStringEnabled = [true,true,true,true,true,true];
 
 function buildStrumZone(){
   strumZone.innerHTML = '';
-  // order: high e on top .. low E on bottom, matching fretboard
   for (let disp=0; disp<6; disp++){
-    const s = 5 - disp; // string index
+    const s = 5 - disp;
     const bar = document.createElement('div');
     bar.className = 'string-bar';
     bar.dataset.string = s;
+
     const phys = document.createElement('div');
     phys.className = 'physical-string';
     const thickness = 1.5 + (5-s)*0.9;
     phys.style.height = thickness + 'px';
     bar.appendChild(phys);
+
+    const toggle = document.createElement('button');
+    toggle.className = 'as-toggle';
+    toggle.dataset.string = s;
+    toggle.textContent = STRING_LABELS[s];
+    toggle.title = 'Include this string in auto-strum';
+    toggle.addEventListener('pointerdown', (e)=>{
+      e.stopPropagation();
+      e.preventDefault();
+      asStringEnabled[s] = !asStringEnabled[s];
+      toggle.classList.toggle('off', !asStringEnabled[s]);
+    });
+    bar.appendChild(toggle);
 
     const meta = document.createElement('div');
     meta.className = 'meta';
@@ -974,13 +1156,11 @@ function refreshStrumUI(){
     const lbl = bar.querySelector('.lbl');
     const fretlbl = bar.querySelector('.fretlbl');
     const noteName = muted ? '×' : (noteNameFor(s, currentFrets[s]) || '');
-    const octGuess = s<=2 ? (s===0?2:(s===1?2:3)) : (s===3?3:4);
     lbl.textContent = STRING_LABELS[s] + ' string';
     fretlbl.textContent = muted ? 'muted' : (noteName + (currentFrets[s]>0 ? ' · fret '+Math.max(currentFrets[s],capo) : ' · open'));
   }
 }
 
-/* strum gesture handling */
 let strumActive = false;
 let strumTouched = new Set();
 let strumOrderCounter = 0;
@@ -994,6 +1174,7 @@ function stringIndexFromPoint(x,y){
 }
 
 strumZone.addEventListener('pointerdown', (e)=>{
+  if (e.target.closest('.as-toggle')) return;
   strumActive = true;
   strumTouched.clear();
   strumOrderCounter = 0;
@@ -1005,6 +1186,7 @@ strumZone.addEventListener('pointerdown', (e)=>{
 });
 strumZone.addEventListener('pointermove', (e)=>{
   if (!strumActive) return;
+  if (e.target.closest('.as-toggle')) return;
   const s = stringIndexFromPoint(e.clientX, e.clientY);
   if (s!==null && !strumTouched.has(s)){
     strumTouched.add(s);
@@ -1063,7 +1245,6 @@ function selectChord(name){
     activeChordName = name;
     chordLabel.textContent = name + ' chord';
     ensureAudio();
-    // gentle strum preview, low to high with slight delay
     let n=0;
     for (let s=0;s<6;s++){
       if (currentFrets[s]===null) continue;
@@ -1115,9 +1296,10 @@ document.getElementById('btn-notes').addEventListener('click', (e)=>{
 const appEl = document.getElementById('app');
 const hintBanner = document.getElementById('hint-banner');
 function setMode(mode){
-  appEl.classList.remove('mode-chords','mode-fretboard');
+  appEl.classList.remove('mode-chords','mode-fretboard','mode-songs');
   appEl.classList.add('mode-'+mode);
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===mode));
+  if (mode !== 'songs') stopSongPractice();
 }
 document.querySelectorAll('.mode-btn').forEach(btn=>{
   btn.addEventListener('click', ()=> setMode(btn.dataset.mode));
@@ -1125,7 +1307,6 @@ document.querySelectorAll('.mode-btn').forEach(btn=>{
 function dismissHint(){ hintBanner.classList.add('hidden'); }
 document.getElementById('strum-zone').addEventListener('pointerdown', dismissHint, {once:true});
 
-/* Tuning & capo */
 const selTuning = document.getElementById('sel-tuning');
 selTuning.addEventListener('change', ()=>{
   tuningKey = selTuning.value;
@@ -1141,7 +1322,6 @@ rngCapo.addEventListener('input', ()=>{
   refreshFretUI(); refreshStrumUI();
 });
 
-/* scale overlay */
 document.getElementById('sel-root').addEventListener('change', (e)=>{
   scaleRoot = e.target.value; refreshFretUI();
 });
@@ -1149,7 +1329,6 @@ document.getElementById('sel-scale').addEventListener('change', (e)=>{
   scaleType = e.target.value; refreshFretUI();
 });
 
-/* tone controls */
 function setToneMode(mode){
   toneMode = mode;
   document.getElementById('btn-clean').classList.toggle('on', mode==='clean');
@@ -1170,12 +1349,10 @@ bindRange('rng-reverb','val-reverb', v=>{ reverbPct=v; if (wetGain) wetGain.gain
 bindRange('rng-vol','val-vol', v=>{ volPct=v; if (masterGain) masterGain.gain.value = v/100; });
 
 /* ============================= AUTO-STRUM ============================= */
-// Continuously re-strums whatever chord/fret is currently held, on a loop,
-// so the player's fretting hand is free to focus on changing shapes.
 let autoStrumOn = false;
 let asBPM = 90;
-let asPattern = 'down';   // 'down' = steady downstrokes, 'downup' = alternating
-let asSubdiv = 'quarter'; // 'quarter' or 'eighth'
+let asPattern = 'down';
+let asSubdiv = 'quarter';
 let asNextTime = 0;
 let asDownNext = true;
 let asTimerId = null;
@@ -1187,6 +1364,7 @@ function strumHeldChord(isDown){
   let hitAny = false;
   for (const s of order){
     if (currentFrets[s] === null) continue;
+    if (!asStringEnabled[s]) continue;
     hitAny = true;
     const when = actx.currentTime + n*0.012;
     pluckString(s, { velocity: isDown ? 0.9 : 0.72, when });
@@ -1235,10 +1413,130 @@ function toggleAutoStrum(){ autoStrumOn ? stopAutoStrum() : startAutoStrum(); }
 
 document.getElementById('btn-autostrum-toggle').addEventListener('click', toggleAutoStrum);
 document.getElementById('btn-as-toggle-drawer').addEventListener('click', toggleAutoStrum);
+document.getElementById('btn-as-reset-strings').addEventListener('click', ()=>{
+  asStringEnabled = [true,true,true,true,true,true];
+  document.querySelectorAll('.as-toggle').forEach(t=>t.classList.remove('off'));
+});
 
 bindRange('rng-as-bpm','val-as-bpm', v=>{ asBPM=v; if (autoStrumOn) updateAutoStrumUI(); });
 document.getElementById('sel-as-pattern').addEventListener('change', e=>{ asPattern = e.target.value; });
 document.getElementById('sel-as-subdiv').addEventListener('change', e=>{ asSubdiv = e.target.value; });
+
+/* ============================= SONGS / PRACTICE ============================= */
+const songsListEl = document.getElementById('songs-list');
+const songDetailEl = document.getElementById('song-detail');
+const progStrip = document.getElementById('prog-strip');
+
+let currentSong = null;
+let songPlaying = false;
+let songIdx = 0;
+let songNextTime = 0;
+let songTimerId = null;
+
+function buildSongsList(){
+  songsListEl.innerHTML = '';
+  SONGS.forEach(song=>{
+    const card = document.createElement('button');
+    card.className = 'song-card';
+    card.innerHTML =
+      '<div class="song-title">'+song.title+'</div>' +
+      '<div class="song-artist">'+song.artist+'</div>' +
+      '<div class="song-meta">' +
+        '<span class="tag">'+song.chords.join(' &middot; ')+'</span>' +
+        '<span class="tag">'+song.bpm+' bpm</span>' +
+        '<span class="tag">'+song.difficulty+'</span>' +
+      '</div>';
+    card.addEventListener('click', ()=> openSongDetail(song));
+    songsListEl.appendChild(card);
+  });
+}
+
+function openSongDetail(song){
+  currentSong = song;
+  stopSongPractice();
+  document.getElementById('song-detail-title').textContent = song.title;
+  document.getElementById('song-detail-artist').textContent = song.artist;
+  document.getElementById('song-detail-bpm').textContent = song.bpm;
+  document.getElementById('song-detail-strum').textContent = song.strum;
+  document.getElementById('song-detail-diff').textContent = song.difficulty;
+
+  progStrip.innerHTML = '';
+  song.chords.forEach((c)=>{
+    const chip = document.createElement('div');
+    chip.className = 'prog-chip';
+    chip.textContent = c;
+    progStrip.appendChild(chip);
+  });
+
+  songsListEl.classList.add('hide');
+  songDetailEl.classList.add('show');
+}
+
+document.getElementById('btn-song-back').addEventListener('click', ()=>{
+  stopSongPractice();
+  songDetailEl.classList.remove('show');
+  songsListEl.classList.remove('hide');
+});
+
+function renderProgressionStrip(){
+  if (!currentSong) return;
+  const chips = progStrip.querySelectorAll('.prog-chip');
+  const nextIdx = (songIdx+1) % currentSong.chords.length;
+  chips.forEach((chip,i)=>{
+    chip.classList.toggle('current', i===songIdx);
+    chip.classList.toggle('next', i===nextIdx && i!==songIdx);
+  });
+}
+
+function applySongChord(){
+  if (!currentSong) return;
+  const name = currentSong.chords[songIdx];
+  selectChord(name);
+  renderProgressionStrip();
+}
+
+function songTick(){
+  if (!songPlaying) return;
+  if (actx.currentTime >= songNextTime){
+    songIdx = (songIdx+1) % currentSong.chords.length;
+    applySongChord();
+    songNextTime += (60/currentSong.bpm) * 4;
+  }
+  songTimerId = setTimeout(songTick, 40);
+}
+
+function startSongPractice(){
+  if (!currentSong) return;
+  ensureAudio();
+  if (actx.state === 'suspended') actx.resume();
+  songPlaying = true;
+  songIdx = 0;
+  applySongChord();
+  songNextTime = actx.currentTime + (60/currentSong.bpm) * 4;
+
+  asBPM = currentSong.bpm;
+  const rngAs = document.getElementById('rng-as-bpm');
+  rngAs.value = asBPM;
+  document.getElementById('val-as-bpm').textContent = asBPM;
+  if (autoStrumOn) updateAutoStrumUI();
+
+  songTick();
+  updateSongPlayUI();
+}
+function stopSongPractice(){
+  songPlaying = false;
+  clearTimeout(songTimerId);
+  updateSongPlayUI();
+}
+function updateSongPlayUI(){
+  const btn = document.getElementById('btn-song-play');
+  if (!btn) return;
+  btn.innerHTML = songPlaying ? 'Stop practice' : 'Start practice &#9654;';
+  btn.classList.toggle('on', songPlaying);
+}
+document.getElementById('btn-song-play').addEventListener('click', ()=>{
+  songPlaying ? stopSongPractice() : startSongPractice();
+});
 
 /* ============================= METRONOME ============================= */
 function playClick(strong){
@@ -1384,13 +1682,13 @@ buildFretboard();
 buildStrumZone();
 buildChordChips();
 buildChordsEasy();
+buildSongsList();
 refreshFretUI();
 refreshStrumUI();
 refreshChordChipsActive();
 setMode('chords');
 updateAutoStrumUI();
 
-// unlock audio on first touch anywhere
 document.body.addEventListener('pointerdown', function unlock(){
   ensureAudio();
   if (actx.state === 'suspended') actx.resume();
