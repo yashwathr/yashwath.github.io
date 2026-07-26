@@ -71,12 +71,17 @@ body::before{
   padding: 14px 16px 8px;
   flex-shrink:0;
 }
-#topbar .brand{ display:flex; align-items:baseline; gap:9px; }
+#topbar .brand{ display:flex; flex-direction:column; gap:2px; }
+#topbar .brand-title-row{ display:flex; align-items:baseline; gap:8px; }
 #topbar .brand h1{
   font-family:'Poppins', sans-serif; font-weight:700; font-size:1.4rem; margin:0;
   color: var(--cream); letter-spacing:-0.01em;
 }
-#topbar .brand span{ font-size:0.72rem; color:var(--brass-bright); font-family:'JetBrains Mono', monospace; }
+#topbar .brand .credit{
+  font-size:0.66rem; color: var(--cream-dim); font-family:'Inter', sans-serif; font-weight:500;
+  opacity:0.75;
+}
+#topbar .brand #current-chord-label{ font-size:0.72rem; color:var(--brass-bright); font-family:'JetBrains Mono', monospace; }
 .icon-btn{
   width:42px; height:42px; border-radius:14px;
   background: linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
@@ -348,6 +353,10 @@ input[type=range]{ flex:1; }
 #looper-timeline{ height:34px; border-radius:8px; background: rgba(255,255,255,0.05); position:relative; overflow:hidden; margin-top:8px; }
 .tick{ position:absolute; bottom:0; width:3px; border-radius:2px; background: var(--brass-bright); }
 .close-drawer{ position:absolute; top:12px; right:14px; background:none; border:none; color:var(--cream-dim); font-size:1.3rem; }
+#drawer-footer{
+  text-align:center; font-size:0.7rem; color: var(--cream-dim); opacity:0.6;
+  font-family:'Inter', sans-serif; padding-top: 6px;
+}
 
 /* ---------- Strum pattern editor ---------- */
 #as-preset-row{ display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; margin-bottom:10px; }
@@ -380,9 +389,11 @@ input[type=range]{ flex:1; }
 
   <div id="topbar">
     <div class="brand">
-      <h1>Fretlight</h1>
-      <p style="font-size: 12px;">By R Yashwath</p>
-      <span id="current-chord-label" style="position: absolute; right: 70px;">open strings</span>
+      <div class="brand-title-row">
+        <h1>Fretlight</h1>
+        <span class="credit">by Yashwath</span>
+      </div>
+      <span id="current-chord-label">open strings</span>
     </div>
     <div class="actions">
       <button class="icon-btn" id="btn-settings" title="Controls">&#9881;</button>
@@ -546,6 +557,8 @@ input[type=range]{ flex:1; }
     </div>
     <div id="looper-timeline"></div>
   </div>
+
+  <div id="drawer-footer">Fretlight &middot; by Yashwath</div>
 
 </div>
 
@@ -780,8 +793,9 @@ function pluckString(stringIndex, opts){
   ensureAudio();
   if (actx.state === 'suspended') actx.resume();
 
+  const bright = opts.brightBias || 0; // 0 = full/warm (downstroke), 1 = thin/bright (upstroke)
   const decay = 0.974 + (sustainPct/100)*0.022;
-  const dur = 1.1 + (sustainPct/100)*1.9;
+  const dur = (1.1 + (sustainPct/100)*1.9) * (1 - bright*0.25);
   const buf = getKarplusBuffer(freq, dur, decay);
 
   const src = actx.createBufferSource();
@@ -791,8 +805,18 @@ function pluckString(stringIndex, opts){
 
   const filter = actx.createBiquadFilter();
   filter.type = 'lowpass';
-  filter.frequency.value = 1000 + (tonePct/100)*5200;
+  filter.frequency.value = 1000 + (tonePct/100)*5200 + bright*2200;
   filter.Q.value = 0.6;
+
+  // upstrokes lose a touch of low end -- the pick is moving away from the
+  // lower strings, so the attack reads thinner and more treble-forward
+  let lowCut = null;
+  if (bright > 0){
+    lowCut = actx.createBiquadFilter();
+    lowCut.type = 'highpass';
+    lowCut.frequency.value = 90 + bright*90;
+    lowCut.Q.value = 0.5;
+  }
 
   const gain = actx.createGain();
   const vel = opts.velocity !== undefined ? opts.velocity : 1;
@@ -801,6 +825,7 @@ function pluckString(stringIndex, opts){
   gain.gain.linearRampToValueAtTime(vel, when + 0.004);
 
   let chain = src.connect(filter);
+  if (lowCut) chain = chain.connect(lowCut);
   if (toneMode === 'drive'){
     const shaper = actx.createWaveShaper();
     shaper.curve = makeDriveCurve(0.32);
@@ -814,7 +839,7 @@ function pluckString(stringIndex, opts){
   }
   chain.connect(gain);
 
-  // pick attack transient layered in briefly at the start
+  // pick attack transient layered in briefly at the start -- more prominent on upstrokes
   if (pickBuffer){
     const pickSrc = actx.createBufferSource();
     pickSrc.buffer = pickBuffer;
@@ -822,7 +847,7 @@ function pluckString(stringIndex, opts){
     pickFilter.type = 'highpass';
     pickFilter.frequency.value = 1800;
     const pickGain = actx.createGain();
-    pickGain.gain.value = vel * 0.16;
+    pickGain.gain.value = vel * (0.16 + bright*0.12);
     pickSrc.connect(pickFilter).connect(pickGain).connect(gain);
     pickSrc.start(when);
   }
@@ -1086,13 +1111,17 @@ let asPendingTimers = [];
 
 function strumHeldChord(isDown){
   ensureAudio();
-  const order = isDown ? [0,1,2,3,4,5] : [5,4,3,2,1,0];
+  // a downstroke is a full motion catching all six strings low-to-high; an
+  // upstroke is shorter and, on a real guitar, usually only catches the top
+  // strings -- that's what gives it a thinner, brighter sound instead of a
+  // quieter copy of the same thing
+  const order = isDown ? [0,1,2,3,4,5] : [5,4,3,2];
   let n = 0;
   for (const s of order){
     if (currentFrets[s] === null) continue;
     if (!asStringEnabled[s]) continue;
     const when = actx.currentTime + n*0.012;
-    pluckString(s, { velocity: isDown ? 0.88 : 0.68, when });
+    pluckString(s, { velocity: isDown ? 0.92 : 0.6, when, brightBias: isDown ? 0 : 1 });
     n++;
   }
 }
