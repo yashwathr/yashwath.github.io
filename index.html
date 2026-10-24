@@ -895,6 +895,24 @@ function getKarplusBuffer(freq, durationSec, decayFactor){
 }
 function clearBufferCache(){ bufferCache.clear(); }
 
+// Pre-synthesize the Karplus-Strong buffers for whatever is currently fretted,
+// right when a chord is selected -- not when the string is actually touched.
+// Synthesizing a fresh buffer is real CPU work (especially on a budget phone),
+// and without this it happens for the first time exactly when the player
+// strums a chord they haven't played yet, which is the delay they feel.
+// By the time their hand reaches the strings it's already cached and instant.
+function warmChordBuffers(){
+  if (!actx) return;
+  const decay = 0.974 + (sustainPct/100)*0.022;
+  const baseDur = 1.1 + (sustainPct/100)*1.9;
+  for (let s=0; s<6; s++){
+    const freq = noteFreq(s, currentFrets[s]);
+    if (freq === null) continue;
+    getKarplusBuffer(freq, baseDur, decay);        // normal pluck / downstroke
+    getKarplusBuffer(freq, baseDur*0.75, decay);    // upstroke (shorter duration variant)
+  }
+}
+
 function noteFreq(stringIndex, fret){
   if (fret === null || fret === undefined) return null;
   const effFret = Math.max(fret, capo);
@@ -1298,6 +1316,7 @@ function buildChordsEasy(){
 // new chord the moment the next already-queued beat arrives.
 function selectChord(name, opts){
   opts = opts || {};
+  ensureAudio(); // create the context here if needed, so warming can run immediately
   dampAllStrings(0.035); // mute whatever was still ringing from the previous chord
   if (name === '__clear'){
     currentFrets = [0,0,0,0,0,0];
@@ -1308,6 +1327,7 @@ function selectChord(name, opts){
     activeChordName = name;
     chordLabel.textContent = name + ' chord';
   }
+  warmChordBuffers();
   refreshStrumUI();
   refreshChordTilesActive();
   dismissHint();
@@ -1358,6 +1378,7 @@ selTuning.addEventListener('change', ()=>{
   tuningOffsets = TUNINGS[tuningKey].slice();
   document.querySelector('#pill-tuning b').textContent = TUNING_LABELS[tuningKey];
   refreshStrumUI();
+  warmChordBuffers();
 });
 const rngCapo = document.getElementById('rng-capo');
 rngCapo.addEventListener('input', ()=>{
@@ -1365,6 +1386,7 @@ rngCapo.addEventListener('input', ()=>{
   document.getElementById('val-capo').textContent = capo;
   document.querySelector('#pill-capo b').textContent = capo;
   refreshStrumUI();
+  warmChordBuffers();
 });
 
 /* ---- amp / tone ---- */
