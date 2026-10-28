@@ -897,20 +897,37 @@ function clearBufferCache(){ bufferCache.clear(); }
 
 // Pre-synthesize the Karplus-Strong buffers for whatever is currently fretted,
 // right when a chord is selected -- not when the string is actually touched.
-// Synthesizing a fresh buffer is real CPU work (especially on a budget phone),
-// and without this it happens for the first time exactly when the player
-// strums a chord they haven't played yet, which is the delay they feel.
-// By the time their hand reaches the strings it's already cached and instant.
+// Synthesizing a fresh buffer is real CPU work (especially on a budget phone).
+// Doing all of it in one synchronous burst blocks the main thread for long
+// enough to delay other pending timers -- including the auto-strum scheduler's
+// own setTimeout ticks, which is what caused the "lag leaks into auto-strum"
+// bug. So instead of synthesizing everything in one go, each note is queued
+// and synthesized one at a time across separate tasks, letting the browser
+// process scheduled strums and input in between each one.
+let warmQueue = [];
+let warmQueueTimer = null;
+function processWarmQueue(){
+  warmQueueTimer = null;
+  if (!warmQueue.length) return;
+  const job = warmQueue.shift();
+  getKarplusBuffer(job[0], job[1], job[2]);
+  if (warmQueue.length) warmQueueTimer = setTimeout(processWarmQueue, 0);
+}
 function warmChordBuffers(){
   if (!actx) return;
   const decay = 0.974 + (sustainPct/100)*0.022;
   const baseDur = 1.1 + (sustainPct/100)*1.9;
+  const jobs = [];
   for (let s=0; s<6; s++){
     const freq = noteFreq(s, currentFrets[s]);
     if (freq === null) continue;
-    getKarplusBuffer(freq, baseDur, decay);        // normal pluck / downstroke
-    getKarplusBuffer(freq, baseDur*0.75, decay);    // upstroke (shorter duration variant)
+    jobs.push([freq, baseDur, decay]); // downstroke / normal pluck -- warmed eagerly
   }
+  // the newly-selected chord's notes jump ahead of anything still queued
+  // from a previous selection, and the queue is capped so it can't grow
+  // unbounded if chords are changed rapidly
+  warmQueue = jobs.concat(warmQueue).slice(0, 18);
+  if (warmQueueTimer === null) warmQueueTimer = setTimeout(processWarmQueue, 0);
 }
 
 function noteFreq(stringIndex, fret){
