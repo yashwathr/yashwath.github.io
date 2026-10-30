@@ -343,14 +343,46 @@ svg.icon{ width:18px; height:18px; flex-shrink:0; stroke: currentColor; fill:non
 #settings-header h2{
   font-family:'Manrope', sans-serif; font-weight:800; font-size:1.08rem; margin:0; color: var(--cream);
 }
-#settings-content{ flex:1; overflow-y:auto; padding: 16px 18px 32px; }
-.drawer-section{ margin-bottom: 20px; }
-.drawer-section h3{
-  font-family:'Manrope', sans-serif; font-size:0.8rem; margin: 0 0 11px; color: var(--cream);
-  display:flex; align-items:center; gap:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
+/* settings list and each section's detail panel overlap like the songs
+   list/detail pair, so drilling into a section slides a new page in
+   instead of just scrolling to a spot on one long page */
+#settings-body{ position:relative; flex:1; overflow:hidden; }
+#settings-list{
+  position:absolute; inset:0; overflow-y:auto;
+  display:flex; flex-direction:column; gap:8px;
+  padding: 14px 16px 28px;
+  transition: transform 0.26s cubic-bezier(.22,.9,.35,1), opacity 0.22s ease;
+  transform: translateX(0); opacity:1;
 }
-.drawer-section h3 svg.icon{ color: var(--brass-bright); }
-.drawer-section .hint-sm{ font-size:0.7rem; color: var(--cream-dim); margin: -4px 0 10px; line-height:1.4; }
+#settings-list.hide{ transform: translateX(-22px); opacity:0; pointer-events:none; }
+
+.settings-row{
+  display:flex; align-items:center; gap:12px; text-align:left;
+  padding: 12px 13px; border-radius: var(--r-lg);
+  background: var(--surface-1); border:1px solid var(--border); color: var(--cream);
+}
+.settings-row-icon{
+  width:36px; height:36px; border-radius:11px; flex-shrink:0;
+  background: var(--brass-wash); color: var(--brass-bright);
+  display:flex; align-items:center; justify-content:center;
+}
+.settings-row-text{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.settings-row-title{ font-family:'Manrope', sans-serif; font-weight:700; font-size:0.9rem; }
+.settings-row-sub{
+  font-size:0.71rem; color: var(--cream-dim);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.settings-row .chevron{ color: var(--cream-dim-2); flex-shrink:0; width:16px; height:16px; }
+
+.settings-section-panel{
+  position:absolute; inset:0; overflow-y:auto;
+  padding: 16px 18px 32px;
+  transition: transform 0.26s cubic-bezier(.22,.9,.35,1), opacity 0.22s ease;
+  transform: translateX(22px); opacity:0; pointer-events:none;
+}
+.settings-section-panel.show{ transform: translateX(0); opacity:1; pointer-events:auto; }
+
+.hint-sm{ font-size:0.7rem; color: var(--cream-dim); margin: -4px 0 10px; line-height:1.4; }
 .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
 .row label{ font-size:0.8rem; color: var(--cream-dim); flex-shrink:0; }
 .row .val{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; color: var(--brass-bright); min-width:32px; text-align:right;}
@@ -429,12 +461,12 @@ input[type=range]{ flex:1; }
    ===================================================================== */
 .btn, .icon-btn, .mode-btn, .chord-tile, .amp-chip, .preset-chip, .beat-pill,
 .beat-adjust, .song-card, .prog-chip, .btn-back, .as-toggle, .close-drawer,
-#btn-autostrum-toggle, #btn-song-play, .credit-badge, .app-mark{
+.settings-row, #btn-autostrum-toggle, #btn-song-play, .credit-badge, .app-mark{
   transition: transform 0.1s ease, background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
 }
 .btn:active, .icon-btn:active, .mode-btn:active, .chord-tile:active, .amp-chip:active,
 .preset-chip:active, .beat-pill:active, .beat-adjust:active, .song-card:active,
-.prog-chip:active, .btn-back:active, .as-toggle:active,
+.prog-chip:active, .btn-back:active, .as-toggle:active, .settings-row:active,
 #btn-autostrum-toggle:active, #btn-song-play:active{
   transform: scale(0.95);
 }
@@ -522,144 +554,189 @@ input[type=range]{ flex:1; }
     <button class="btn-back" id="btn-settings-back">
       <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <h2>Settings</h2>
-  </div>
-  <div id="settings-content">
-
-  <div class="drawer-section">
-    <h3><svg class="icon" viewBox="0 0 24 24"><path d="M6 15V7M12 17V5M18 15V9"/></svg>Tuning &amp; Capo</h3>
-    <div class="row">
-      <label>Tuning</label>
-      <select id="sel-tuning">
-        <option value="standard">Standard (E A D G B E)</option>
-        <option value="dropd">Drop D</option>
-        <option value="halfdown">Half-step down</option>
-        <option value="fulldown">Full-step down</option>
-        <option value="openg">Open G</option>
-        <option value="opend">Open D</option>
-        <option value="dadgad">DADGAD</option>
-      </select>
-    </div>
-    <div class="row">
-      <label>Capo</label>
-      <input type="range" id="rng-capo" min="0" max="9" value="0" step="1">
-      <span class="val" id="val-capo">0</span>
-    </div>
+    <h2 id="settings-header-title">Settings</h2>
   </div>
 
-  <div class="drawer-section">
-    <h3><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h10M17 7h3M4 17h3M9 17h11"/><circle cx="14" cy="7" r="2"/><circle cx="7" cy="17" r="2"/></svg>Amp &amp; Tone</h3>
-    <div class="amp-grid" id="amp-grid">
-      <button class="amp-chip active" data-tone="acoustic">Acoustic</button>
-      <button class="amp-chip" data-tone="electric_clean">Clean Electric</button>
-      <button class="amp-chip" data-tone="crunch">Crunch</button>
-      <button class="amp-chip" data-tone="lead">Lead</button>
-    </div>
-    <div class="row" style="margin-top:14px;">
-      <label>Sustain</label>
-      <input type="range" id="rng-sustain" min="0" max="100" value="55">
-      <span class="val" id="val-sustain">55</span>
-    </div>
-    <div class="row">
-      <label>Warmth (tone)</label>
-      <input type="range" id="rng-tone" min="0" max="100" value="58">
-      <span class="val" id="val-tone">58</span>
-    </div>
-    <div class="row">
-      <label>Body resonance</label>
-      <input type="range" id="rng-body" min="0" max="100" value="45">
-      <span class="val" id="val-body">45</span>
-    </div>
-    <div class="row">
-      <label>Vibrato (sustained notes)</label>
-      <input type="range" id="rng-vibrato" min="0" max="100" value="40">
-      <span class="val" id="val-vibrato">40</span>
-    </div>
-    <div class="row">
-      <label>Reverb</label>
-      <input type="range" id="rng-reverb" min="0" max="100" value="22">
-      <span class="val" id="val-reverb">22</span>
-    </div>
-    <div class="row">
-      <label>Volume</label>
-      <input type="range" id="rng-vol" min="0" max="100" value="80">
-      <span class="val" id="val-vol">80</span>
-    </div>
-  </div>
+  <div id="settings-body">
+    <div id="settings-list">
+      <button class="settings-row" data-section="tuning">
+        <span class="settings-row-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M6 15V7M12 17V5M18 15V9"/></svg></span>
+        <span class="settings-row-text">
+          <span class="settings-row-title">Tuning &amp; Capo</span>
+          <span class="settings-row-sub">Alternate tunings and capo position</span>
+        </span>
+        <svg class="icon chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="settings-row" data-section="tone">
+        <span class="settings-row-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h10M17 7h3M4 17h3M9 17h11"/><circle cx="14" cy="7" r="2"/><circle cx="7" cy="17" r="2"/></svg></span>
+        <span class="settings-row-text">
+          <span class="settings-row-title">Amp &amp; Tone</span>
+          <span class="settings-row-sub">Amp model, sustain, resonance, volume</span>
+        </span>
+        <svg class="icon chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="settings-row" data-section="autostrum">
+        <span class="settings-row-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3c4 0 7 4 7 8s-3 9-7 9-7-5-7-9 3-8 7-8z"/></svg></span>
+        <span class="settings-row-text">
+          <span class="settings-row-title">Auto-strum</span>
+          <span class="settings-row-sub">Speed, strings and strum pattern</span>
+        </span>
+        <svg class="icon chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="settings-row" data-section="beat">
+        <span class="settings-row-icon"><svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v8c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/></svg></span>
+        <span class="settings-row-text">
+          <span class="settings-row-title">Backing Beat</span>
+          <span class="settings-row-sub">Drum groove style and volume</span>
+        </span>
+        <svg class="icon chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="settings-row" data-section="metronome">
+        <span class="settings-row-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M9 3h6l3 17H6L9 3z"/><path d="M12 7l2.2 9.5"/></svg></span>
+        <span class="settings-row-text">
+          <span class="settings-row-title">Metronome</span>
+          <span class="settings-row-sub">Practice tempo</span>
+        </span>
+        <svg class="icon chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="settings-row" data-section="looper">
+        <span class="settings-row-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h11a4 4 0 0 1 4 4v1M20 17H9a4 4 0 0 1-4-4v-1"/><path d="M15 4l3 3-3 3M9 20l-3-3 3-3"/></svg></span>
+        <span class="settings-row-text">
+          <span class="settings-row-title">Looper</span>
+          <span class="settings-row-sub">Record and loop a phrase</span>
+        </span>
+        <svg class="icon chevron" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
 
-  <div class="drawer-section">
-    <h3><svg class="icon" viewBox="0 0 24 24"><path d="M12 3c4 0 7 4 7 8s-3 9-7 9-7-5-7-9 3-8 7-8z"/></svg>Auto-strum</h3>
-    <div class="hint-sm">Badges on the strum zone choose which strings play automatically. Build a strum pattern below.</div>
-    <div class="btn-row">
-      <button class="btn" id="btn-as-toggle-drawer">Start</button>
-      <button class="btn" id="btn-as-reset-strings">Reset strings</button>
+      <div id="drawer-footer">Fretlight &middot; by Yashwath</div>
     </div>
-    <div class="row" style="margin-top:12px;">
-      <label>Speed</label>
-      <input type="range" id="rng-as-bpm" min="40" max="200" value="90">
-      <span class="val" id="val-as-bpm">90</span>
-    </div>
-    <div class="row">
-      <label>Note value</label>
-      <select id="sel-as-subdiv">
-        <option value="quarter">Quarter notes</option>
-        <option value="eighth">Eighth notes</option>
-      </select>
-    </div>
-    <div id="as-preset-row"></div>
-    <div id="as-pattern-editor">
-      <button class="beat-adjust" id="btn-beat-remove">&minus;</button>
-      <div id="as-pattern-row"></div>
-      <button class="beat-adjust" id="btn-beat-add">+</button>
-    </div>
-  </div>
 
-  <div class="drawer-section">
-    <h3><svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v8c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/></svg>Backing Beat</h3>
-    <div class="hint-sm">Plays a simple drum groove under auto-strum and song practice, locked to the same tempo.</div>
-    <div class="btn-row">
-      <button class="btn" id="btn-drums-toggle">Off</button>
+    <div class="settings-section-panel" data-section="tuning">
+      <div class="row">
+        <label>Tuning</label>
+        <select id="sel-tuning">
+          <option value="standard">Standard (E A D G B E)</option>
+          <option value="dropd">Drop D</option>
+          <option value="halfdown">Half-step down</option>
+          <option value="fulldown">Full-step down</option>
+          <option value="openg">Open G</option>
+          <option value="opend">Open D</option>
+          <option value="dadgad">DADGAD</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Capo</label>
+        <input type="range" id="rng-capo" min="0" max="9" value="0" step="1">
+        <span class="val" id="val-capo">0</span>
+      </div>
     </div>
-    <div class="row" style="margin-top:12px;">
-      <label>Style</label>
-      <select id="sel-drum-style">
-        <option value="rock">Rock / Pop</option>
-        <option value="folk">Folk</option>
-        <option value="ballad">Ballad</option>
-        <option value="reggae">Reggae</option>
-      </select>
-    </div>
-    <div class="row">
-      <label>Beat volume</label>
-      <input type="range" id="rng-drum-vol" min="0" max="100" value="65">
-      <span class="val" id="val-drum-vol">65</span>
-    </div>
-  </div>
 
-  <div class="drawer-section">
-    <h3><svg class="icon" viewBox="0 0 24 24"><path d="M9 3h6l3 17H6L9 3z"/><path d="M12 7l2.2 9.5"/></svg>Metronome</h3>
-    <div class="row">
-      <label>Tempo</label>
-      <input type="range" id="rng-bpm" min="40" max="240" value="96">
-      <span class="val" id="val-bpm">96</span>
+    <div class="settings-section-panel" data-section="tone">
+      <div class="amp-grid" id="amp-grid">
+        <button class="amp-chip active" data-tone="acoustic">Acoustic</button>
+        <button class="amp-chip" data-tone="electric_clean">Clean Electric</button>
+        <button class="amp-chip" data-tone="crunch">Crunch</button>
+        <button class="amp-chip" data-tone="lead">Lead</button>
+      </div>
+      <div class="row" style="margin-top:14px;">
+        <label>Sustain</label>
+        <input type="range" id="rng-sustain" min="0" max="100" value="55">
+        <span class="val" id="val-sustain">55</span>
+      </div>
+      <div class="row">
+        <label>Warmth (tone)</label>
+        <input type="range" id="rng-tone" min="0" max="100" value="58">
+        <span class="val" id="val-tone">58</span>
+      </div>
+      <div class="row">
+        <label>Body resonance</label>
+        <input type="range" id="rng-body" min="0" max="100" value="45">
+        <span class="val" id="val-body">45</span>
+      </div>
+      <div class="row">
+        <label>Vibrato (sustained notes)</label>
+        <input type="range" id="rng-vibrato" min="0" max="100" value="40">
+        <span class="val" id="val-vibrato">40</span>
+      </div>
+      <div class="row">
+        <label>Reverb</label>
+        <input type="range" id="rng-reverb" min="0" max="100" value="22">
+        <span class="val" id="val-reverb">22</span>
+      </div>
+      <div class="row">
+        <label>Volume</label>
+        <input type="range" id="rng-vol" min="0" max="100" value="80">
+        <span class="val" id="val-vol">80</span>
+      </div>
     </div>
-    <div class="btn-row">
-      <button class="btn" id="btn-tap">Tap tempo</button>
-      <button class="btn" id="btn-metro">Start</button>
-    </div>
-  </div>
 
-  <div class="drawer-section">
-    <h3><svg class="icon" viewBox="0 0 24 24"><path d="M4 7h11a4 4 0 0 1 4 4v1M20 17H9a4 4 0 0 1-4-4v-1"/><path d="M15 4l3 3-3 3M9 20l-3-3 3-3"/></svg>Looper</h3>
-    <div class="btn-row">
-      <button class="btn danger" id="btn-rec"><span class="rec-dot"></span><span class="rec-label">Record</span></button>
-      <button class="btn" id="btn-play-loop">Play</button>
-      <button class="btn" id="btn-clear-loop">Clear</button>
+    <div class="settings-section-panel" data-section="autostrum">
+      <div class="hint-sm">Badges on the strum zone choose which strings play automatically. Build a strum pattern below.</div>
+      <div class="btn-row">
+        <button class="btn" id="btn-as-toggle-drawer">Start</button>
+        <button class="btn" id="btn-as-reset-strings">Reset strings</button>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <label>Speed</label>
+        <input type="range" id="rng-as-bpm" min="40" max="200" value="90">
+        <span class="val" id="val-as-bpm">90</span>
+      </div>
+      <div class="row">
+        <label>Note value</label>
+        <select id="sel-as-subdiv">
+          <option value="quarter">Quarter notes</option>
+          <option value="eighth">Eighth notes</option>
+        </select>
+      </div>
+      <div id="as-preset-row"></div>
+      <div id="as-pattern-editor">
+        <button class="beat-adjust" id="btn-beat-remove">&minus;</button>
+        <div id="as-pattern-row"></div>
+        <button class="beat-adjust" id="btn-beat-add">+</button>
+      </div>
     </div>
-    <div id="looper-timeline"></div>
-  </div>
 
-  <div id="drawer-footer">Fretlight &middot; by Yashwath</div>
+    <div class="settings-section-panel" data-section="beat">
+      <div class="hint-sm">Plays a simple drum groove under auto-strum and song practice, locked to the same tempo.</div>
+      <div class="btn-row">
+        <button class="btn" id="btn-drums-toggle">Off</button>
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <label>Style</label>
+        <select id="sel-drum-style">
+          <option value="rock">Rock / Pop</option>
+          <option value="folk">Folk</option>
+          <option value="ballad">Ballad</option>
+          <option value="reggae">Reggae</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Beat volume</label>
+        <input type="range" id="rng-drum-vol" min="0" max="100" value="65">
+        <span class="val" id="val-drum-vol">65</span>
+      </div>
+    </div>
+
+    <div class="settings-section-panel" data-section="metronome">
+      <div class="row">
+        <label>Tempo</label>
+        <input type="range" id="rng-bpm" min="40" max="240" value="96">
+        <span class="val" id="val-bpm">96</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="btn-tap">Tap tempo</button>
+        <button class="btn" id="btn-metro">Start</button>
+      </div>
+    </div>
+
+    <div class="settings-section-panel" data-section="looper">
+      <div class="btn-row">
+        <button class="btn danger" id="btn-rec"><span class="rec-dot"></span><span class="rec-label">Record</span></button>
+        <button class="btn" id="btn-play-loop">Play</button>
+        <button class="btn" id="btn-clear-loop">Clear</button>
+      </div>
+      <div id="looper-timeline"></div>
+    </div>
 
   </div>
 </div>
@@ -1363,10 +1440,47 @@ function refreshChordTilesActive(){
 
 /* ============================= SETTINGS PAGE ============================= */
 const settingsPage = document.getElementById('settings-page');
+const settingsList = document.getElementById('settings-list');
+const settingsHeaderTitle = document.getElementById('settings-header-title');
+const SECTION_TITLES = {
+  tuning: 'Tuning & Capo',
+  tone: 'Amp & Tone',
+  autostrum: 'Auto-strum',
+  beat: 'Backing Beat',
+  metronome: 'Metronome',
+  looper: 'Looper',
+};
+let settingsLevel = 'list'; // 'list' or one of the keys above
+
+function showSettingsList(){
+  settingsLevel = 'list';
+  settingsHeaderTitle.textContent = 'Settings';
+  settingsList.classList.remove('hide');
+  document.querySelectorAll('.settings-section-panel').forEach(p => p.classList.remove('show'));
+}
+function showSettingsSection(key){
+  settingsLevel = key;
+  settingsHeaderTitle.textContent = SECTION_TITLES[key] || 'Settings';
+  settingsList.classList.add('hide');
+  document.querySelectorAll('.settings-section-panel').forEach(p=>{
+    p.classList.toggle('show', p.dataset.section === key);
+  });
+}
+document.querySelectorAll('.settings-row').forEach(row=>{
+  row.addEventListener('click', ()=> showSettingsSection(row.dataset.section));
+});
+
 document.getElementById('btn-settings').addEventListener('click', ()=>{
+  showSettingsList(); // always open to the top-level list, not wherever it was left
   settingsPage.classList.add('open');
 });
-document.getElementById('btn-settings-back').addEventListener('click', closeSettings);
+document.getElementById('btn-settings-back').addEventListener('click', ()=>{
+  if (settingsLevel === 'list'){
+    closeSettings();
+  } else {
+    showSettingsList();
+  }
+});
 function closeSettings(){ settingsPage.classList.remove('open'); }
 
 /* ============================= MODE SWITCH & HINT ============================= */
